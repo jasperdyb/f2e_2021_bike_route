@@ -1,10 +1,10 @@
 import React from "react";
 import Image from "next/image";
 import { ImageProps } from "next/image";
-import { styled } from "@mui/material/styles";
+import styled from "styled-components";
 
 const BackgroundImageContainer = styled("div")`
-  position: "fix";
+  position: fixed;
   height: 100vh;
   width: 100vw;
   overflow: hidden;

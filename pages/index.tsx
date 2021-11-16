@@ -11,8 +11,7 @@ import SearchPanel from "components/SearchPanel";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 
-import banner01 from "public/img//banner01.jpg";
-import taiwan_logo_white from "public/svg//taiwan_logo_white.svg";
+import indexBackground from "@img/bg01.jpg";
 
 const Home: NextPage = () => {
   return (
@@ -21,22 +20,7 @@ const Home: NextPage = () => {
         <title>TaiwanTravel</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Background src={banner01}>
-        <Navbar color="transparent" />
-        <Container maxWidth="sm">
-          <Image
-            src={taiwan_logo_white}
-            alt="Taiwan Logo"
-            objectPosition="center"
-            objectFit="cover"
-          />
-        </Container>
-        <Grid container justifyContent="center">
-          <Grid item>
-            <SearchPanel />
-          </Grid>
-        </Grid>
-      </Background>
+      <Background src={indexBackground}></Background>
     </>
   );
 };
