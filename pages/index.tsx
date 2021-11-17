@@ -12,6 +12,8 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 
 import indexBackground from "@img/bg01.jpg";
+import Logo from "@svg/Logo";
+import { Typography } from "@mui/material";
 
 const Home: NextPage = () => {
   return (
@@ -20,7 +22,10 @@ const Home: NextPage = () => {
         <title>TaiwanTravel</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Background src={indexBackground}></Background>
+      <Background image={indexBackground}>
+        <Navbar color="info" />
+        <Typography typography={"h1"}>Bike Fun！自行車旅遊網</Typography>
+      </Background>
     </>
   );
 };

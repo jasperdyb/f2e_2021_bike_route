@@ -7,6 +7,8 @@ import {
   styled,
   ThemeProvider,
   darken,
+  Palette,
+  PaletteOptions,
 } from "@mui/material/styles";
 import { SceneSpotContextProvider } from "context/sceneSpot";
 
@@ -18,16 +20,31 @@ body{
 }
 `;
 
+declare module "@mui/material/styles" {
+  interface Palette {
+    primaryContrast: Palette["primary"];
+  }
+  interface PaletteOptions {
+    primaryContrast?: PaletteOptions["primary"];
+  }
+}
+
 const mainTheme = createTheme({
   palette: {
     primary: {
-      main: "#E8CB89",
+      main: "#E1AB43",
+      contrastText: "#FFF",
+    },
+    primaryContrast: {
+      main: "#FFF",
+      contrastText: "#E1AB43",
     },
     secondary: {
       main: "#A6CDE0",
     },
     info: {
-      main: "#7BAEBE",
+      main: "#FFF",
+      contrastText: "#000",
     },
   },
 

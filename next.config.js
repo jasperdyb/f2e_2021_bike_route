@@ -4,7 +4,6 @@ module.exports = {
   env: {
     NUMBER_PER_PAGE: 10,
   },
-
   images: {
     domains: [
       "www.travel.taipei",

@@ -1,31 +1,61 @@
 import * as React from "react";
+import Link from "next/link";
+import Image from "next/image";
+
 import { PropTypes } from "@mui/material";
 
 import AppBar from "@mui/material/AppBar";
+import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import Link from "next/link";
+import Divider from "@mui/material/Divider";
 
-// import styled from "styled-components";
-import { styled } from "@mui/material/styles";
+import styled from "styled-components";
+import { styled as muiStyled } from "@mui/material/styles";
 
-// const CustomAppBar = styled.div`
-const CustomAppBar = styled(AppBar)`
+import { Logo, LogoYellow } from "public/svg";
+
+const ThemeColorAppBar = muiStyled(AppBar)(
+  ({ theme }) => `
+  background-color:${theme.palette.common.white}
+  color:${theme.palette.common.black}
+`
+);
+
+const CustomAppBar = styled(ThemeColorAppBar)`
   box-shadow: none;
-  padding: 0 140px;
-  color: #fff;
+  border-radius: 50px 50px 0px 0px;
 `;
 
+const TitleLinkStack = styled(Stack)`
+  margin: 19px 0;
+  cursor: pointer;
+`;
+
+const Slogan = muiStyled(Typography)(
+  ({ theme }) => `
+  cursor: pointer;
+  color:${theme.palette.common.black}
+`
+);
+
+const NavButton = styled(Button)`
+  flex-grow: 1;
+`;
+
+// const Logo = styled(Image)`
+//   fill: #000 !important;
+// `;
+
 const menu = [
-  { title: "旅遊情報", link: "/" },
-  { title: "景點查詢", link: "/search" },
-  { title: "美食推薦", link: "/" },
-  { title: "旅宿資訊", link: "/" },
-  { title: "節慶活動", link: "/" },
+  { title: "最新消息", link: "/" },
+  { title: "探索路線", link: "/" },
+  { title: "尋照站點", link: "/search" },
+  { title: "常見問題", link: "/" },
 ];
 
 interface Props {
@@ -35,19 +65,23 @@ interface Props {
 const Navbar: React.FC<Props> = ({ color }) => {
   return (
     <CustomAppBar color={color} position="sticky">
-      <Toolbar>
+      <Stack
+        direction={"row"}
+        divider={<Divider orientation="vertical" flexItem />}
+      >
         <Link href={"/"} passHref>
-          <Typography variant="h1" component="div" sx={{ flexGrow: 1 }}>
-            TAIWAN TRAVEL
-          </Typography>
-        </Link>
+          <TitleLinkStack textAlign={"center"}>
+            <LogoYellow width={"133px"} height={"49px"} />
 
+            <Slogan typography={"subtitle1"}>Bike Fun！自行車旅遊網</Slogan>
+          </TitleLinkStack>
+        </Link>
         {menu.map((item, index) => (
           <Link key={index} href={item.link} passHref>
-            <Button color="inherit">{item.title}</Button>
+            <NavButton color="inherit">{item.title}</NavButton>
           </Link>
         ))}
-      </Toolbar>
+      </Stack>
     </CustomAppBar>
   );
 };
