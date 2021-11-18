@@ -64,9 +64,7 @@ const mainTheme = createTheme({
     fontSize: 14,
 
     h1: {
-      fontSize: "22px",
-      letterSpacing: "1.54px",
-      lineHeight: "30px",
+      fontSize: "24px",
     },
     h2: {
       fontSize: "18px",

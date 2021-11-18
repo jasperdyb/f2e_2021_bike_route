@@ -18,16 +18,19 @@ import styled from "styled-components";
 import logoYellow from "@img/logo_yellow.png";
 import { styled as muiStyled } from "@mui/material/styles";
 
-const ThemeColorAppBar = muiStyled(AppBar)(
+const ThemedAppBar = muiStyled(AppBar)(
   ({ theme }) => `
-  background-color:${theme.palette.common.white}
-  color:${theme.palette.common.black}
+  background-color:${theme.palette.common.white};
+  color:${theme.palette.common.black};
+  border-color:${theme.palette.divider};
 `
 );
 
-const CustomAppBar = styled(ThemeColorAppBar)`
+const CustomAppBar = styled(ThemedAppBar)`
   box-shadow: none;
   border-radius: 50px 50px 0px 0px;
+  border-width: 1px;
+  border-style: solid;
 `;
 
 const TitleLinkStack = styled(Stack)`
