@@ -1,22 +1,24 @@
 import type { NextPage } from "next";
+import Link from "next/link";
 import styled from "styled-components";
-import { styled as muiStyled } from "@mui/material/styles";
 import Head from "next/head";
 import Image from "next/image";
+import { useGetSceneSpots } from "services/sceneSpots";
+
+import { styled as muiStyled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import { Typography } from "@mui/material";
 
-import { useGetSceneSpots } from "services/sceneSpots";
 import Background from "components/Background";
 import Navbar from "components/Navbar";
 import SearchPanel from "components/SearchPanel";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
 
 import indexBackground from "@img/bg01.jpg";
 import bike_boy from "@img/illustration_bikeboy.png";
 import Logo from "@svg/Logo";
-import { Typography } from "@mui/material";
 
 const DescriptionContainer = styled("div")`
   background-color: white;
@@ -38,16 +40,28 @@ const InfoGridContainer = styled(Grid)`
 const ThemedGrid = muiStyled(Grid)(
   ({ theme }) => `
   border-color:${theme.palette.divider}; 
+  color: ${theme.palette.primary.main}; 
+  background-color: ${theme.palette.primary.contrastText}; 
 `
 );
 
-const InfoTitleGrid = styled(ThemedGrid)`
+const ThemedInfoTitleGrid = muiStyled(ThemedGrid)(
+  ({ theme }) => ` 
+  &:hover {
+   background-color: ${theme.palette.primary.main}; 
+   color: ${theme.palette.primary.contrastText}; 
+  }
+`
+);
+
+const InfoTitleGrid = styled(ThemedInfoTitleGrid)`
   max-width: 252px;
   flex-grow: 0.63;
   padding: 219px 0;
   text-align: center;
   border-width: 1px;
   border-style: solid;
+  cursor: pointer;
 `;
 const InfoMainGrid = styled(ThemedGrid)`
   flex-grow: 2;
@@ -78,31 +92,31 @@ const Home: NextPage = () => {
           </DescriptionBody>
         </DescriptionContainer>
         <InfoGridContainer container direction={"row"}>
-          <InfoTitleGrid item>
-            <Typography typography={"h1"} color={"primary"}>
-              最新消息
-            </Typography>
-          </InfoTitleGrid>
+          <Link href={"/"} passHref>
+            <InfoTitleGrid item>
+              <Typography typography={"h1"}>最新消息</Typography>
+            </InfoTitleGrid>
+          </Link>
           <InfoMainGrid item></InfoMainGrid>
           <InfoSubGrid item></InfoSubGrid>
         </InfoGridContainer>
 
         <InfoGridContainer container direction={"row"}>
-          <InfoTitleGrid item>
-            <Typography typography={"h1"} color={"primary"}>
-              探索路線
-            </Typography>
-          </InfoTitleGrid>
+          <Link href={"/"} passHref>
+            <InfoTitleGrid item>
+              <Typography typography={"h1"}>探索路線</Typography>
+            </InfoTitleGrid>
+          </Link>
           <InfoMainGrid item></InfoMainGrid>
           <InfoSubGrid item></InfoSubGrid>
         </InfoGridContainer>
 
         <InfoGridContainer container direction={"row"}>
-          <InfoTitleGrid item>
-            <Typography typography={"h1"} color={"primary"}>
-              尋找站點
-            </Typography>
-          </InfoTitleGrid>
+          <Link href={"/"} passHref>
+            <InfoTitleGrid item>
+              <Typography typography={"h1"}>尋找站點</Typography>
+            </InfoTitleGrid>
+          </Link>
           <InfoMainGrid item></InfoMainGrid>
           <InfoSubGrid item></InfoSubGrid>
         </InfoGridContainer>
