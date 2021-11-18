@@ -14,7 +14,6 @@ import Container from "@mui/material/Container";
 import styled from "styled-components";
 
 const CustomAppBar = styled(AppBar)`
-  margin-top: 70px;
   padding: 33px 0;
   color: #fff;
 `;

@@ -7,71 +7,68 @@ import { useGetSceneSpots } from "services/sceneSpots";
 
 import { styled as muiStyled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
-import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import { Typography } from "@mui/material";
 
 import Background from "components/Background";
 import Navbar from "components/Navbar";
-import SearchPanel from "components/SearchPanel";
+import MainInfoGrid from "components/MainInfoGrid";
+import InfoCard, { InfoCardContainer } from "components/InfoCard";
+import MainButton from "components/MainButton";
+import Footer from "components/Footer";
+import ImageWithFallback from "components/ImageWithFallback";
 
 import indexBackground from "@img/bg01.jpg";
-import bike_boy from "@img/illustration_bikeboy.png";
+import index_route from "@img/index_route.jpg";
+import index_busStation from "@img/index_busStation.jpg";
+
+import index_news01 from "@img/index_news01.jpg";
+
+import bike_boy from "@img/boyWithRoute.png";
+
 import Logo from "@svg/Logo";
 
 const DescriptionContainer = styled("div")`
   background-color: white;
 `;
-const DescriptionBody = styled("div")`
+const DescriptionBody = styled(Stack)`
   max-width: 860px;
   margin: 0 auto;
   padding: 22px 0 69px 0;
 `;
 
 const BikeBoyImage = styled(Image)`
-  transform: matrix(-0.95, 0.31, 0.31, 0.95, 0, 0);
+  /* transform: matrix(-0.95, 0.31, 0.31, 0.95, 0, 0); */
 `;
 
-const InfoGridContainer = styled(Grid)`
-  background-color: white;
+const InfoCardHalfContainer = styled("div")`
+  width: 50%;
+  height: 100%;
 `;
 
-const ThemedGrid = muiStyled(Grid)(
+const BorderStack = muiStyled(Stack)(
   ({ theme }) => `
-  border-color:${theme.palette.divider}; 
-  color: ${theme.palette.primary.main}; 
-  background-color: ${theme.palette.primary.contrastText}; 
+  border-color:${theme.palette.divider};  
+  border-width: 1px;
+  border-style: solid;
 `
 );
 
-const ThemedInfoTitleGrid = muiStyled(ThemedGrid)(
+const FaqStack = muiStyled(Stack)(
   ({ theme }) => ` 
-  &:hover {
-   background-color: ${theme.palette.primary.main}; 
-   color: ${theme.palette.primary.contrastText}; 
-  }
+  background-color: ${theme.palette.common.white};  
+  padding-top: 56px;
+  padding-bottom: 64px;
 `
 );
+const FaqStackTitle = styled(Typography)`
+  margin-bottom: 56px;
+`;
 
-const InfoTitleGrid = styled(ThemedInfoTitleGrid)`
-  max-width: 252px;
-  flex-grow: 0.63;
-  padding: 219px 0;
-  text-align: center;
-  border-width: 1px;
-  border-style: solid;
-  cursor: pointer;
-`;
-const InfoMainGrid = styled(ThemedGrid)`
-  flex-grow: 2;
-  border-width: 1px;
-  border-style: solid;
-`;
-const InfoSubGrid = styled(ThemedGrid)`
-  flex-grow: 1;
-  border-width: 1px;
-  border-style: solid;
+const FaqStackList = styled(Stack)`
+  margin-bottom: 40px;
 `;
 
 const Home: NextPage = () => {
@@ -84,45 +81,125 @@ const Home: NextPage = () => {
       <Background image={indexBackground}>
         <Navbar color="info" />
         <DescriptionContainer>
-          <DescriptionBody>
+          <DescriptionBody alignItems={"center"}>
             <BikeBoyImage src={bike_boy} alt="bike boy" />
             <Typography>
               便。告全禱我王劈有哇汐懇久給，分網呢瑄度不期清？資空有，沾對路韜空文近建回屠樞快錯樣沒卻遂人到騷不胡辨音次結，盪陳車，比反網己使。它栽！虛四是甚首；翩鏢社果捐貨話買啊？炭沾強三管期、同題己我己…、鵰章措秩合到公話慈在期不金議是曹搬大愛成以章陳要喜區跨，星退傑狗市蓉都利娟車龍人廿西美法沖憐為誰提嗜？裊張前廬狸中定，老靶五嘉慶卸太神戰經我重的，直看意澡每崎入因北用厚；要便，平是直找頒徊核艱至又放想工。
             </Typography>
           </DescriptionBody>
         </DescriptionContainer>
-        <InfoGridContainer container direction={"row"}>
-          <Link href={"/"} passHref>
-            <InfoTitleGrid item>
-              <Typography typography={"h1"}>最新消息</Typography>
-            </InfoTitleGrid>
-          </Link>
-          <InfoMainGrid item></InfoMainGrid>
-          <InfoSubGrid item></InfoSubGrid>
-        </InfoGridContainer>
-
-        <InfoGridContainer container direction={"row"}>
-          <Link href={"/"} passHref>
-            <InfoTitleGrid item>
-              <Typography typography={"h1"}>探索路線</Typography>
-            </InfoTitleGrid>
-          </Link>
-          <InfoMainGrid item></InfoMainGrid>
-          <InfoSubGrid item></InfoSubGrid>
-        </InfoGridContainer>
-
-        <InfoGridContainer container direction={"row"}>
-          <Link href={"/"} passHref>
-            <InfoTitleGrid item>
-              <Typography typography={"h1"}>尋找站點</Typography>
-            </InfoTitleGrid>
-          </Link>
-          <InfoMainGrid item></InfoMainGrid>
-          <InfoSubGrid item></InfoSubGrid>
-        </InfoGridContainer>
+        <MainInfoGrid
+          title="最新消息"
+          link="/"
+          mainInfoElement={
+            <Stack direction={"row"} height={"100%"}>
+              <InfoCardHalfContainer>
+                <InfoCard src={index_news01} />
+              </InfoCardHalfContainer>
+              <InfoCardHalfContainer>
+                <InfoCard src={index_news01} />
+              </InfoCardHalfContainer>
+            </Stack>
+          }
+          subInfoElement={
+            <Stack
+              alignItems={"center"}
+              justifyContent={"center"}
+              sx={{ height: "100%" }}
+            >
+              <MainButton title="更多最新消息" />
+            </Stack>
+          }
+        />
+        <MainInfoGrid
+          title="探索路線"
+          link="/"
+          mainInfoElement={
+            <Stack
+              height={"100%"}
+              paddingLeft={"53px"}
+              alignItems={"flex-start"}
+              justifyContent={"center"}
+              spacing={"32px"}
+            >
+              <Typography>
+                自動定位、手動輸入都方便！ 快速找到離您最近的車道路線
+              </Typography>
+              <MainButton title="立刻搜尋" />
+            </Stack>
+          }
+          subInfoElement={
+            <InfoCardContainer>
+              <Image
+                src={index_route}
+                layout="fill"
+                objectFit="cover"
+                objectPosition="center"
+                alt=""
+              />
+            </InfoCardContainer>
+          }
+        />
+        <MainInfoGrid
+          title="尋找站點"
+          link="/"
+          mainInfoElement={
+            <InfoCardContainer>
+              <Image
+                src={index_busStation}
+                layout="fill"
+                objectFit="cover"
+                objectPosition="center"
+                alt=""
+              />
+            </InfoCardContainer>
+          }
+          subInfoElement={
+            <Stack height={"100%"} justifyContent={"stretch"}>
+              <BorderStack
+                height={"100%"}
+                paddingLeft={"53px"}
+                alignItems={"flex-start"}
+                justifyContent={"center"}
+                spacing={"32px"}
+              >
+                <Typography>即時站點地圖</Typography>
+                <MainButton title="立刻查看" />
+              </BorderStack>
+              <BorderStack
+                height={"100%"}
+                paddingLeft={"53px"}
+                alignItems={"flex-start"}
+                justifyContent={"center"}
+                spacing={"32px"}
+              >
+                <Typography>服務中心資訊</Typography>
+                <MainButton title="立刻查看" />
+              </BorderStack>
+            </Stack>
+          }
+        />
+        <FaqStack alignItems={"center"} justifyContent={"center"}>
+          <FaqStackTitle typography={"h2"} color={"primary"}>
+            常見問題
+          </FaqStackTitle>
+          <FaqStackList spacing={"30px"} textAlign={"center"}>
+            <Typography>憫感忿加它棺再？琵言襟嗎賺叫要中吧？</Typography>
+            <Typography>
+              憫感忿加它棺再？琵言襟嗎賺叫要中吧？要萍浮現以蹤功應版有了
+            </Typography>
+            <Typography>憫感忿加它棺再？琵言襟嗎賺叫要中吧？</Typography>
+          </FaqStackList>
+          <MainButton title="更多常見問題" />
+        </FaqStack>
+        <Footer>
+          <Typography>
+            BikeFun © 2021 Designer Vum. Engineer Jasper Chen. All rights
+            reserved.
+          </Typography>
+        </Footer>
       </Background>
     </>
   );
 };
-
 export default Home;
