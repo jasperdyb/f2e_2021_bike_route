@@ -9,7 +9,7 @@ import Grid from "@mui/material/Grid";
 import { Typography } from "@mui/material";
 
 import { Logo } from "@svg";
-import { Hotel, ArrowRight } from "public/icon";
+import logoWhite from "@img/logo_white.png";
 
 const BackgroundContainer = styled("div")`
   overflow: hidden;
@@ -79,7 +79,13 @@ const Background: React.FC<Props> = ({ image, logo, children }) => {
             alignContent={"center"}
           >
             <Grid item>
-              <Logo />
+              <Image
+                src={logoWhite}
+                alt="Logo"
+                width={"545"}
+                height={"165"}
+                objectFit="contain"
+              />
               <Slogan typography={"h1"}>Bike Fun！自行車旅遊網</Slogan>
             </Grid>
           </LogoContainer>

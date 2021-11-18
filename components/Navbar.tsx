@@ -15,9 +15,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Divider from "@mui/material/Divider";
 
 import styled from "styled-components";
+import logoYellow from "@img/logo_yellow.png";
 import { styled as muiStyled } from "@mui/material/styles";
-
-import { Logo, LogoYellow } from "public/svg";
 
 const ThemeColorAppBar = muiStyled(AppBar)(
   ({ theme }) => `
@@ -33,6 +32,7 @@ const CustomAppBar = styled(ThemeColorAppBar)`
 
 const TitleLinkStack = styled(Stack)`
   margin: 19px 0;
+  padding: 0 128px;
   cursor: pointer;
 `;
 
@@ -71,7 +71,12 @@ const Navbar: React.FC<Props> = ({ color }) => {
       >
         <Link href={"/"} passHref>
           <TitleLinkStack textAlign={"center"}>
-            <LogoYellow width={"133px"} height={"49px"} />
+            <Image
+              src={logoYellow}
+              alt="Logo"
+              width={"133px"}
+              height={"49px"}
+            />
 
             <Slogan typography={"subtitle1"}>Bike Fun！自行車旅遊網</Slogan>
           </TitleLinkStack>
