@@ -1,8 +1,7 @@
 import * as React from "react";
 import defaultImage from "@img//bg01.jpg";
-import Image from "next/image";
+import Image, { ImageProps } from "next/image";
 import { useState } from "react";
-import { ImageProps } from "next/image";
 
 interface Props extends ImageProps {
   fallBackSrc?: string;

@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { styled as muiStyled } from "@mui/material/styles";
 import Image from "next/image";
+import { gsap } from "gsap";
 
 import { useTheme } from "@mui/material/styles";
 
@@ -31,20 +32,21 @@ import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 export const InfoCardContainer = styled("div")`
   position: relative;
   height: 100%;
+  overflow: hidden;
 `;
 
-const BackgroundImageContainer = styled("div")`
+const BackgroundImageContainer = styled.div`
   position: absolute;
   height: 100%;
   width: 100%;
   overflow: hidden;
   z-index: 0;
-`;
-
-const SlideCardBackgroundImage = styled(ImageWithFallback)`
   &:hover {
     transform: scale(1.2, 1.2);
   }
+`;
+
+const SlideCardBackgroundImage = styled(ImageWithFallback)`
   z-index: 10;
 `;
 
@@ -76,10 +78,11 @@ interface Props {
 
 const InfoCard: React.FC<Props> = ({ backgroundImage, children }) => {
   const theme = useTheme();
+  const imageRef = useRef();
 
   return (
     <InfoCardContainer>
-      <BackgroundImageContainer>
+      <BackgroundImageContainer ref={imageRef}>
         <SlideCardBackgroundImage
           src={backgroundImage}
           layout="fill"
@@ -89,7 +92,15 @@ const InfoCard: React.FC<Props> = ({ backgroundImage, children }) => {
         />
       </BackgroundImageContainer>
 
-      <InfoCardActionArea onClick={() => console.log("CLLLLLLLick")}>
+      <InfoCardActionArea
+        onClick={() => console.log("CLLLLLLLick")}
+        onMouseEnter={() => {
+          gsap.to(imageRef.current, { scale: 1.2 });
+        }}
+        onMouseLeave={() => {
+          gsap.to(imageRef.current, { scale: 1 });
+        }}
+      >
         <InfoContainer textAlign={"center"}>
           <InfoDate color="common.white">2021/09/22</InfoDate>
           <InfoTitle typography={"h1"} color="common.white">
