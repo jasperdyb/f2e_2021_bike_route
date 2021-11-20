@@ -40,7 +40,7 @@ const ThemedStack = muiStyled(Stack)(
 );
 
 const TitleGrid = styled(Grid)`
-  margin-right: 47px;
+  padding-right: 47px;
 `;
 
 const TitleStack = styled(ThemedStack)`
@@ -60,6 +60,10 @@ const SearchInputLabel = styled(FormControlLabel)`
   flex-direction: row-reverse;
   justify-content: space-between;
   margin: 0;
+
+  & .MuiFormControlLabel-label {
+    margin-right: 64px;
+  }
 `;
 
 const SearchInput = styled(TextField)`

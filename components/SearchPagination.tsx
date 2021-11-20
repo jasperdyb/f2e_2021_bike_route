@@ -7,32 +7,45 @@ import { useTheme } from "@mui/material/styles";
 
 import Pagination from "@mui/material/Pagination";
 
-const CustomPagination = styled(Pagination)`
+const ThemedPagination = muiStyled(Pagination)(
+  ({ theme }) => `
+  & .MuiPaginationItem-root {
+    border-color: ${theme.palette.secondary.main};
+    color: ${theme.palette.secondary.main};
+  }
+
+  & .MuiPaginationItem-previousNext {
+    border-color: ${theme.palette.secondary.main};
+    color: ${theme.palette.secondary.main};
+  }
+
+  & .MuiPaginationItem-previousNext.Mui-disabled {
+    border-color:${theme.palette.grey[700]};
+    color: ${theme.palette.grey[700]};
+    background-color: null;
+  }
+
+  & .Mui-selected {
+    background-color:  ${theme.palette.secondary.main};
+    color:  ${theme.palette.common.white};
+    border: none;
+  }
+`
+);
+
+const CustomPagination = styled(ThemedPagination)`
   & .MuiPagination-ul {
     justify-content: flex-end;
   }
 
-  & .MuiPaginationItem-root {
-    border-radius: 10px;
-    border-color: #a5a5a5;
-    color: #a5a5a5;
+  & .MuiPagination-ul li {
+    width: 74px;
   }
 
-  & .MuiPaginationItem-previousNext {
-    border-color: #7baebe;
-    color: #7baebe;
-  }
-
-  & .MuiPaginationItem-previousNext.Mui-disabled {
-    border: none;
-    color: #bcbcbc;
-    background-color: #e6e6e6;
-  }
-
-  & .Mui-selected {
-    background-color: #7baebe;
-    color: #ffffff;
-    border: none;
+  & .MuiPaginationItem-sizeLarge {
+    width: 50px;
+    height: 50px;
+    border-radius: 100px;
   }
 `;
 
@@ -42,11 +55,7 @@ interface Props {
   onChange: (event: React.ChangeEvent<unknown>, page: number) => void;
 }
 
-const SceneInfoPagination: React.FC<Props> = ({
-  page,
-  dataLength,
-  onChange,
-}) => {
+const SearchPagination: React.FC<Props> = ({ page, dataLength, onChange }) => {
   const [count, setCount] = React.useState(1);
 
   React.useEffect(() => {
@@ -59,9 +68,8 @@ const SceneInfoPagination: React.FC<Props> = ({
       page={page}
       count={count}
       variant="outlined"
-      shape="rounded"
       onChange={onChange}
     />
   );
 };
-export default SceneInfoPagination;
+export default SearchPagination;

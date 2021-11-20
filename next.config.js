@@ -2,7 +2,7 @@
 module.exports = {
   reactStrictMode: true,
   env: {
-    NUMBER_PER_PAGE: 10,
+    NUMBER_PER_PAGE: 12,
   },
   images: {
     domains: [

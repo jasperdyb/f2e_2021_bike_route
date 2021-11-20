@@ -17,8 +17,13 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import TextField from "@mui/material/TextField";
 
 import SortSelect from "components/SortSelect";
+import CyclingRouteInfoCard from "components/CyclingRouteInfoCard";
+import SearchPagination from "components/SearchPagination";
 
 import { useSceneSpotContext } from "context/sceneSpot";
+
+import { useGetCyclingRouteIndex } from "services/cyclingRoute";
+import { CyclingIndexDataType } from "types/cyclingRoute";
 
 const SearchContainer = styled(CardContent)`
   padding: 24px 48px 32px 24px;
@@ -33,39 +38,12 @@ const ThemedStack = muiStyled(Stack)(
 `
 );
 
-const TitleGrid = styled(Grid)`
-  margin-right: 47px;
-`;
-
 const TitleStack = styled(ThemedStack)`
   padding-left: 16px;
 `;
 
-const SwitchStack = styled(Stack)``;
-
-const SwitchLabel = styled(FormControlLabel)`
-  margin-left: 16px;
-  & .MuiFormControlLabel-label {
-    margin-right: 48px;
-  }
-`;
-
-const SearchInputLabel = styled(FormControlLabel)`
-  flex-direction: row-reverse;
-  justify-content: space-between;
-  margin: 0;
-`;
-
-const SearchInput = styled(TextField)`
-  & .MuiOutlinedInput-input {
-    width: 320px;
-    padding: 12px;
-  }
-`;
-
-const SearchButton = styled(Button)`
-  min-width: 120px;
-  height: 40px;
+const PaginationContainer = styled.div`
+  margin-top: 64px;
 `;
 
 interface SearchFormType {
@@ -75,6 +53,9 @@ interface SearchFormType {
 }
 
 const SearchResult: React.FC = () => {
+  const { cyclingRoutes } = useGetCyclingRouteIndex();
+  const [pageData, setPageData] = useState<Array<CyclingIndexDataType>>([]);
+  const [page, setPage] = useState(1);
   const { region, city, type, setRegion, setCity, setType } =
     useSceneSpotContext();
   console.log("===  SearchResult useSceneSpotContext ===", {
@@ -82,34 +63,55 @@ const SearchResult: React.FC = () => {
     city,
   });
 
-  const { handleSubmit, watch, setValue, control } = useForm<SearchFormType>({
-    defaultValues: {
-      search: "",
-      address: "",
-      autoPositionOn: false,
-    },
-  });
-
-  const autoPositionOn = watch("autoPositionOn", false);
-
-  const onSubmit: SubmitHandler<SearchFormType> = (data) => {};
+  useEffect(() => {
+    if (cyclingRoutes)
+      setPageData(
+        cyclingRoutes.slice(
+          process.env.NUMBER_PER_PAGE * (page - 1),
+          process.env.NUMBER_PER_PAGE * page
+        )
+      );
+  }, [page, cyclingRoutes]);
 
   return (
-    <Card raised>
-      <SearchContainer>
-        <Stack direction={"row"} justifyContent={"space-between"}>
-          <TitleStack spacing={"8px"}>
-            <Typography typography={"h1"} color={"primary"}>
-              搜尋結果
-            </Typography>
-            <Typography>找到離您最近的自行車車道</Typography>
-          </TitleStack>
-          <SortSelect />
-        </Stack>
+    <>
+      <Card raised>
+        <SearchContainer>
+          <Stack
+            direction={"row"}
+            justifyContent={"space-between"}
+            marginBottom={"32px"}
+          >
+            <TitleStack spacing={"8px"}>
+              <Typography typography={"h1"} color={"primary"}>
+                搜尋結果
+              </Typography>
+              <Typography>找到離您最近的自行車車道</Typography>
+            </TitleStack>
+            <SortSelect />
+          </Stack>
 
-        <Grid container></Grid>
-      </SearchContainer>
-    </Card>
+          <Grid container spacing={"28px"}>
+            {cyclingRoutes && cyclingRoutes.length === 0 ? (
+              <Typography>很抱歉，沒有找到相關的路線。</Typography>
+            ) : (
+              pageData.map((cyclingRouteData, index) => (
+                <Grid key={index} item xs={4}>
+                  <CyclingRouteInfoCard cyclingRouteData={cyclingRouteData} />
+                </Grid>
+              ))
+            )}
+          </Grid>
+        </SearchContainer>
+      </Card>
+      <PaginationContainer>
+        <SearchPagination
+          page={page}
+          dataLength={cyclingRoutes.length}
+          onChange={(_, page) => {}}
+        />
+      </PaginationContainer>
+    </>
   );
 };
 

@@ -17,6 +17,7 @@ import SearchPanel from "components/SearchPanel";
 import SearchResult from "components/SearchResult";
 
 import bg02 from "@img/bg02.jpg";
+import { useGetCyclingRouteIndex } from "services/cyclingRoute";
 
 const HeaderImageContainer = styled("div")`
   position: relative;
