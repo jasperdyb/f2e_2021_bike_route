@@ -23,18 +23,10 @@ const BackgroundImageContainer = styled("div")`
 `;
 
 const LogoContainer = styled(Grid)`
+  min-height: 100px;
   margin-top: 219px;
   margin-bottom: 224px;
   z-index: 0;
-`;
-
-// const Logo = styled(Image)``;
-
-const ColorLogo = styled(Logo)`
-  fill: red;
-  stroke: pink;
-  color: salmon;
-  background-color: green;
 `;
 
 const ColoredTypography = muiStyled(Typography)(
@@ -72,15 +64,15 @@ const Background: React.FC<Props> = ({ image, logo, children }) => {
         />
       </BackgroundImageContainer>
       <BackgroundImageChildrenContainer>
-        {Logo && (
-          <LogoContainer
-            container
-            justifyContent={"center"}
-            alignContent={"center"}
-          >
+        <LogoContainer
+          container
+          justifyContent={"center"}
+          alignContent={"center"}
+        >
+          {logo && (
             <Grid item>
               <Image
-                src={logoWhite}
+                src={logo}
                 alt="Logo"
                 width={"545"}
                 height={"165"}
@@ -88,8 +80,9 @@ const Background: React.FC<Props> = ({ image, logo, children }) => {
               />
               <Slogan typography={"h1"}>Bike Fun！自行車旅遊網</Slogan>
             </Grid>
-          </LogoContainer>
-        )}
+          )}
+        </LogoContainer>
+
         {children}
       </BackgroundImageChildrenContainer>
     </BackgroundContainer>

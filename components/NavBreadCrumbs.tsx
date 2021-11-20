@@ -6,19 +6,21 @@ import Link from "@mui/material/Link";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import Typography from "@mui/material/Typography";
 
-const CustomDiv = styled("div")``;
+const CustomBreadcrumbs = styled(Breadcrumbs)`
+  padding: 16px 0;
+`;
 
 const NavBreadCrumbs: React.FC = () => {
   return (
-    <Breadcrumbs
+    <CustomBreadcrumbs
       aria-label="breadcrumb"
       separator={<NavigateNextIcon fontSize="small" />}
     >
       <Link underline="hover" color="inherit" href="/">
         首頁
       </Link>
-      <Typography color="info.main">景點查詢</Typography>
-    </Breadcrumbs>
+      <Typography color="secondary.main">探索路線</Typography>
+    </CustomBreadcrumbs>
   );
 };
 export default NavBreadCrumbs;

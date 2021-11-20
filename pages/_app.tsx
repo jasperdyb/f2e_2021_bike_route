@@ -14,13 +14,13 @@ import {
   PaletteOptions,
 } from "@mui/material/styles";
 import { SceneSpotContextProvider } from "context/sceneSpot";
-import Layout from "components/Layout";
 
 const GlobalStyle = createGlobalStyle`
 html{ 
 }
 
 body{ 
+  background-color: white;
 }
 `;
 

@@ -17,6 +17,8 @@ import index_route from "@img/index_route.jpg";
 import index_busStation from "@img/index_busStation.jpg";
 import index_news01 from "@img/index_news01.jpg";
 import bike_boy from "@img/boyWithRoute.png";
+import bg01 from "@img/bg01.jpg";
+import logo_white from "@img/logo_white.png";
 
 const DescriptionContainer = styled("div")`
   background-color: white;
@@ -179,7 +181,11 @@ const Home = () => {
 };
 
 Home.getLayout = function getLayout(page: ReactElement) {
-  return <Layout>{page}</Layout>;
+  return (
+    <Layout backgroundImage={bg01} logo={logo_white}>
+      {page}
+    </Layout>
+  );
 };
 
 export default Home;

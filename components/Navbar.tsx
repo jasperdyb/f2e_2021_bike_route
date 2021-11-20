@@ -1,6 +1,8 @@
 import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import styled from "styled-components";
+import { styled as muiStyled } from "@mui/material/styles";
 
 import { PropTypes } from "@mui/material";
 
@@ -14,9 +16,7 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Divider from "@mui/material/Divider";
 
-import styled from "styled-components";
 import logoYellow from "@img/logo_yellow.png";
-import { styled as muiStyled } from "@mui/material/styles";
 
 const ThemedAppBar = muiStyled(AppBar)(
   ({ theme }) => `
@@ -69,8 +69,8 @@ const NavButton = styled(themedButton)`
 
 const menu = [
   { title: "最新消息", link: "/" },
-  { title: "探索路線", link: "/" },
-  { title: "尋照站點", link: "/search" },
+  { title: "探索路線", link: "/route" },
+  { title: "尋照站點", link: "/" },
   { title: "常見問題", link: "/" },
 ];
 
