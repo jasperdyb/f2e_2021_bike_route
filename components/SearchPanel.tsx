@@ -25,58 +25,7 @@ import FormGroup from "@mui/material/FormGroup";
 import MainSwitch from "components/MainSwitch";
 
 import { useSceneSpotContext } from "context/sceneSpot";
-
-const SearchContainer = styled(CardContent)`
-  padding: 24px 48px 32px 32px;
-  &:last-child {
-    padding-bottom: 32px;
-  }
-`;
-
-const ThemedStack = muiStyled(Stack)(
-  ({ theme }) => ` border-left: 3px solid ${theme.palette.primary.main};
- 
-`
-);
-
-const TitleGrid = styled(Grid)`
-  padding-right: 47px;
-`;
-
-const TitleStack = styled(ThemedStack)`
-  padding-left: 16px;
-`;
-
-const SwitchStack = styled(Stack)``;
-
-const SwitchLabel = styled(FormControlLabel)`
-  margin-left: 16px;
-  & .MuiFormControlLabel-label {
-    margin-right: 48px;
-  }
-`;
-
-const SearchInputLabel = styled(FormControlLabel)`
-  flex-direction: row-reverse;
-  justify-content: space-between;
-  margin: 0;
-
-  & .MuiFormControlLabel-label {
-    margin-right: 64px;
-  }
-`;
-
-const SearchInput = styled(TextField)`
-  & .MuiOutlinedInput-input {
-    width: 320px;
-    padding: 12px;
-  }
-`;
-
-const SearchButton = styled(Button)`
-  min-width: 120px;
-  height: 40px;
-`;
+import { getCurrentPosition } from "services/geolocation";
 
 interface SearchFormType {
   search: string;
@@ -158,5 +107,57 @@ const SearchPanel: React.FC = () => {
     </Card>
   );
 };
+
+const SearchContainer = styled(CardContent)`
+  padding: 24px 48px 32px 32px;
+  &:last-child {
+    padding-bottom: 32px;
+  }
+`;
+
+const ThemedStack = muiStyled(Stack)(
+  ({ theme }) => ` border-left: 3px solid ${theme.palette.primary.main};
+ 
+`
+);
+
+const TitleGrid = styled(Grid)`
+  padding-right: 47px;
+`;
+
+const TitleStack = styled(ThemedStack)`
+  padding-left: 16px;
+`;
+
+const SwitchStack = styled(Stack)``;
+
+const SwitchLabel = styled(FormControlLabel)`
+  margin-left: 16px;
+  & .MuiFormControlLabel-label {
+    margin-right: 48px;
+  }
+`;
+
+const SearchInputLabel = styled(FormControlLabel)`
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  margin: 0;
+
+  & .MuiFormControlLabel-label {
+    margin-right: 64px;
+  }
+`;
+
+const SearchInput = styled(TextField)`
+  & .MuiOutlinedInput-input {
+    width: 320px;
+    padding: 12px;
+  }
+`;
+
+const SearchButton = styled(Button)`
+  min-width: 120px;
+  height: 40px;
+`;
 
 export default SearchPanel;
