@@ -14,22 +14,16 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
-
 import TextField from "@mui/material/TextField";
-import Input from "@mui/material/Input";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
-import FormGroup from "@mui/material/FormGroup";
 
-import MainSwitch from "components/MainSwitch";
+import SortSelect from "components/SortSelect";
 
 import { useSceneSpotContext } from "context/sceneSpot";
 
 const SearchContainer = styled(CardContent)`
-  padding: 24px 48px 32px 32px;
+  padding: 24px 48px 32px 24px;
   &:last-child {
-    padding-bottom: 32px;
+    padding-bottom: 24px;
   }
 `;
 
@@ -80,10 +74,10 @@ interface SearchFormType {
   autoPositionOn: boolean;
 }
 
-const SearchPanel: React.FC = () => {
+const SearchResult: React.FC = () => {
   const { region, city, type, setRegion, setCity, setType } =
     useSceneSpotContext();
-  console.log("===  SearchPanel useSceneSpotContext ===", {
+  console.log("===  SearchResult useSceneSpotContext ===", {
     region,
     city,
   });
@@ -103,56 +97,20 @@ const SearchPanel: React.FC = () => {
   return (
     <Card raised>
       <SearchContainer>
-        <Grid container justifyContent={"space-between"}>
-          <TitleGrid>
-            <Stack spacing={"46px"}>
-              <TitleStack spacing={"8px"}>
-                <Typography typography={"h1"} color={"primary"}>
-                  探索路線
-                </Typography>
-                <Typography>找到離您最近的自行車車道</Typography>
-              </TitleStack>
-              <SwitchStack direction={"row"} alignItems={"center"}>
-                <SwitchLabel
-                  control={<MainSwitch />}
-                  labelPlacement="start"
-                  label="開啟自動定位"
-                />
-              </SwitchStack>
-            </Stack>
-          </TitleGrid>
-          <Grid>
-            <Stack height={"100%"} justifyContent={"space-between"}>
-              <SearchInputLabel
-                control={
-                  <SearchInput placeholder="請輸入關鍵字" variant="outlined" />
-                }
-                labelPlacement="start"
-                label="路線關鍵字"
-              />
-              <SearchInputLabel
-                control={
-                  <SearchInput placeholder="請輸入地址" variant="outlined" />
-                }
-                labelPlacement="start"
-                label="手動輸入地址"
-              />
-            </Stack>
-          </Grid>
-          <Stack justifyContent={"flex-end"}>
-            <SearchButton
-              disableElevation
-              variant="contained"
-              color="secondary"
-              onClick={handleSubmit(onSubmit)}
-            >
-              GO!
-            </SearchButton>
-          </Stack>
-        </Grid>
+        <Stack direction={"row"} justifyContent={"space-between"}>
+          <TitleStack spacing={"8px"}>
+            <Typography typography={"h1"} color={"primary"}>
+              搜尋結果
+            </Typography>
+            <Typography>找到離您最近的自行車車道</Typography>
+          </TitleStack>
+          <SortSelect />
+        </Stack>
+
+        <Grid container></Grid>
       </SearchContainer>
     </Card>
   );
 };
 
-export default SearchPanel;
+export default SearchResult;

@@ -12,21 +12,15 @@ import Background from "components/Background";
 import Navbar from "components/Navbar";
 import Footer from "components/Footer";
 
-interface Props {
-  backgroundImage: string;
-  logo?: string;
-}
-const Layout: React.FC<Props> = ({ backgroundImage, logo, children }) => {
+interface Props {}
+const Layout: React.FC<Props> = ({ children }) => {
   return (
     <>
       <Head>
         <title>TaiwanTravel</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Background image={backgroundImage} logo={logo}>
-        <Navbar color="info" />
-        {children}
-      </Background>
+      {children}
       <Footer>
         <Typography>
           BikeFun © 2021 Designer Vum. Engineer Jasper Chen. All rights

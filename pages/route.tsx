@@ -9,10 +9,12 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
+import Layout from "components/Layout";
 
 import Navbar from "components/Navbar";
 import NavBreadCrumbs from "components/NavBreadCrumbs";
 import SearchPanel from "components/SearchPanel";
+import SearchResult from "components/SearchResult";
 
 import bg02 from "@img/bg02.jpg";
 
@@ -23,45 +25,11 @@ const HeaderImageContainer = styled("div")`
   margin-bottom: -50px;
 `;
 
-const DescriptionContainer = styled("div")`
-  background-color: white;
-`;
-const DescriptionBody = styled(Stack)`
-  max-width: 860px;
-  margin: 0 auto;
-  padding: 22px 0 69px 0;
-`;
-
-const BikeBoyImage = styled(Image)`
-  /* transform: matrix(-0.95, 0.31, 0.31, 0.95, 0, 0); */
-`;
-
-const InfoCardHalfContainer = styled("div")`
-  width: 50%;
-  height: 100%;
-`;
-
-const BorderStack = muiStyled(Stack)(
-  ({ theme }) => `
-  border-color:${theme.palette.divider};  
-  border-width: 1px;
-  border-style: solid;
-`
-);
-
-const FaqStack = muiStyled(Stack)(
-  ({ theme }) => ` 
-  background-color: ${theme.palette.common.white};  
-  padding-top: 56px;
-  padding-bottom: 64px;
-`
-);
-const FaqStackTitle = styled(Typography)`
-  margin-bottom: 56px;
-`;
-
-const FaqStackList = styled(Stack)`
+const SearchPanelContainer = styled.div`
   margin-bottom: 40px;
+`;
+const SearchResultContainer = styled.div`
+  margin-bottom: 208px;
 `;
 
 const Route = () => {
@@ -79,14 +47,19 @@ const Route = () => {
       <Navbar color="info" />
       <Container>
         <NavBreadCrumbs />
-        <SearchPanel />
+        <SearchPanelContainer>
+          <SearchPanel />
+        </SearchPanelContainer>
+        <SearchResultContainer>
+          <SearchResult />
+        </SearchResultContainer>
       </Container>
     </>
   );
 };
 
 Route.getLayout = function getLayout(page: ReactElement) {
-  return page;
+  return <Layout>{page}</Layout>;
 };
 
 export default Route;
