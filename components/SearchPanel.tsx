@@ -13,20 +13,25 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import Divider from "@mui/material/Divider";
-
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 
-import SearchPanelTypeList from "components/SearchPanelTypeList";
-import SearchSelect from "components/SearchSelect";
+import TextField from "@mui/material/TextField";
+import Input from "@mui/material/Input";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputLabel from "@mui/material/InputLabel";
+import FormGroup from "@mui/material/FormGroup";
+
 import MainSwitch from "components/MainSwitch";
 
-import { RegionOptions, CityOptions } from "types/sceneSpots";
 import { useSceneSpotContext } from "context/sceneSpot";
-import { SceneTypeOptions } from "types/sceneSpots";
+
+const SearchContainer = styled(CardContent)`
+  padding: 24px 48px 32px 32px;
+  &:last-child {
+    padding-bottom: 32px;
+  }
+`;
 
 const ThemedStack = muiStyled(Stack)(
   ({ theme }) => ` border-left: 3px solid ${theme.palette.primary.main};
@@ -34,17 +39,39 @@ const ThemedStack = muiStyled(Stack)(
 `
 );
 
+const TitleGrid = styled(Grid)`
+  margin-right: 47px;
+`;
+
 const TitleStack = styled(ThemedStack)`
   padding-left: 16px;
 `;
 
-const SwitchStack = styled(Stack)`
-  padding-left: 16px;
+const SwitchStack = styled(Stack)``;
+
+const SwitchLabel = styled(FormControlLabel)`
+  margin-left: 16px;
+  & .MuiFormControlLabel-label {
+    margin-right: 48px;
+  }
+`;
+
+const SearchInputLabel = styled(FormControlLabel)`
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  margin: 0;
+`;
+
+const SearchInput = styled(TextField)`
+  & .MuiOutlinedInput-input {
+    width: 320px;
+    padding: 12px;
+  }
 `;
 
 const SearchButton = styled(Button)`
-  min-width: 142px;
-  height: 50px;
+  min-width: 120px;
+  height: 40px;
 `;
 
 interface SearchFormType {
@@ -75,9 +102,9 @@ const SearchPanelVertical: React.FC = () => {
 
   return (
     <Card raised>
-      <CardContent>
-        <Grid container>
-          <Grid item xs={4}>
+      <SearchContainer>
+        <Grid container justifyContent={"space-between"}>
+          <TitleGrid>
             <Stack spacing={"46px"}>
               <TitleStack spacing={"8px"}>
                 <Typography typography={"h1"} color={"primary"}>
@@ -85,21 +112,31 @@ const SearchPanelVertical: React.FC = () => {
                 </Typography>
                 <Typography>找到離您最近的自行車車道</Typography>
               </TitleStack>
-              <SwitchStack
-                direction={"row"}
-                spacing="48px"
-                alignItems={"center"}
-              >
-                <Typography>開啟自動定位</Typography>
-                <MainSwitch></MainSwitch>
+              <SwitchStack direction={"row"} alignItems={"center"}>
+                <SwitchLabel
+                  control={<MainSwitch />}
+                  labelPlacement="start"
+                  label="開啟自動定位"
+                />
               </SwitchStack>
             </Stack>
-          </Grid>
-          <Grid item xs={6}>
-            <Stack>
-              <Typography>Title</Typography>
-
-              <Typography>Switch</Typography>
+          </TitleGrid>
+          <Grid>
+            <Stack height={"100%"} justifyContent={"space-between"}>
+              <SearchInputLabel
+                control={
+                  <SearchInput placeholder="請輸入關鍵字" variant="outlined" />
+                }
+                labelPlacement="start"
+                label="路線關鍵字"
+              />
+              <SearchInputLabel
+                control={
+                  <SearchInput placeholder="請輸入地址" variant="outlined" />
+                }
+                labelPlacement="start"
+                label="手動輸入地址"
+              />
             </Stack>
           </Grid>
           <Stack justifyContent={"flex-end"}>
@@ -113,7 +150,7 @@ const SearchPanelVertical: React.FC = () => {
             </SearchButton>
           </Stack>
         </Grid>
-      </CardContent>
+      </SearchContainer>
     </Card>
   );
 };
