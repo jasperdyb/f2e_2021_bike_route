@@ -1,5 +1,8 @@
 import type { AppProps } from "next/app";
-import { useContext, createContext } from "react";
+
+import type { ReactElement, ReactNode } from "react";
+import type { NextPage } from "next";
+
 import { createGlobalStyle } from "styled-components";
 import CssBaseline from "@mui/material/CssBaseline";
 import {
@@ -11,6 +14,7 @@ import {
   PaletteOptions,
 } from "@mui/material/styles";
 import { SceneSpotContextProvider } from "context/sceneSpot";
+import Layout from "components/Layout";
 
 const GlobalStyle = createGlobalStyle`
 html{ 
@@ -28,6 +32,14 @@ declare module "@mui/material/styles" {
     primaryContrast?: PaletteOptions["primary"];
   }
 }
+
+type NextPageWithLayout = NextPage & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
 
 const mainTheme = createTheme({
   palette: {
@@ -92,14 +104,15 @@ const mainTheme = createTheme({
   },
 });
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+  const getLayout = Component.getLayout ?? ((page) => page);
   return (
     <>
       <CssBaseline />
       <GlobalStyle />
       <ThemeProvider theme={mainTheme}>
         <SceneSpotContextProvider>
-          <Component {...pageProps} />
+          {getLayout(<Component {...pageProps} />)}
         </SceneSpotContextProvider>
       </ThemeProvider>
     </>
