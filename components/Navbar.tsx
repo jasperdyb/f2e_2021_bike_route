@@ -31,6 +31,7 @@ const CustomAppBar = styled(ThemedAppBar)`
   border-radius: 50px 50px 0px 0px;
   border-width: 1px;
   border-style: solid;
+  overflow: hidden;
 `;
 
 const TitleLinkStack = styled(Stack)`
@@ -46,8 +47,20 @@ const Slogan = muiStyled(Typography)(
 `
 );
 
-const NavButton = styled(Button)`
+const themedButton = muiStyled(Button)(
+  ({ theme }) => `
+  cursor: pointer;
+  color: ${theme.palette.grey[700]}; 
+  &:hover {
+   background-color: ${theme.palette.primary.main}; 
+   color: ${theme.palette.primary.contrastText}; 
+  }
+`
+);
+
+const NavButton = styled(themedButton)`
   flex-grow: 1;
+  border-radius: 0;
 `;
 
 // const Logo = styled(Image)`
