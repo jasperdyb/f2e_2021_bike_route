@@ -79,16 +79,23 @@ const CyclingRouteInfoCard: React.FC<Props> = ({
               <Grid item xs={12} container padding={"16px"}>
                 <Grid item xs={7} container rowSpacing={"12px"}>
                   <Grid item xs={12}>
-                    {cyclingRouteData.RouteName}
+                    <Typography typography={"h3"}>
+                      {cyclingRouteData.RouteName}
+                    </Typography>
                   </Grid>
                   <Grid item xs={12}>
-                    {`${
-                      cyclingRouteData.Direction
-                        ? cyclingRouteData.Direction
-                        : "單向"
-                    } ${
-                      Math.floor(cyclingRouteData.CyclingLength / 100) / 10
-                    } 公里`}
+                    <Typography
+                      typography={"subtitle2"}
+                      color={"secondary.main"}
+                    >
+                      {`${
+                        cyclingRouteData.Direction
+                          ? cyclingRouteData.Direction
+                          : "單向"
+                      } ${
+                        Math.floor(cyclingRouteData.CyclingLength / 100) / 10
+                      } 公里`}
+                    </Typography>
                   </Grid>
                 </Grid>
                 <Grid
@@ -100,12 +107,29 @@ const CyclingRouteInfoCard: React.FC<Props> = ({
                   justifyContent={"flex-end"}
                 >
                   <Grid item xs={12}>
-                    {distance ? `距離目標約 ${distance} 公里` : "-"}
+                    <Typography typography={"subtitle2"} color={"grey.500"}>
+                      {distance ? `距離目標約 ${distance} 公里` : "-"}
+                    </Typography>
                   </Grid>
                   <Grid item xs={12}>
-                    {`${cyclingRouteData.City} ${
-                      cyclingRouteData.Town ? cyclingRouteData.Town : ""
-                    }`}
+                    <Stack
+                      direction="row"
+                      justifyContent={"flex-end"}
+                      alignItems={"flex-end"}
+                      spacing={"7px"}
+                    >
+                      <RoomIcon color="primary" fontSize="small" />
+                      <Typography
+                        typography={"subtitle2"}
+                        color={"secondary.main"}
+                      >
+                        {`${cyclingRouteData.City} ${
+                          cyclingRouteData.Town
+                            ? cyclingRouteData.Town.split("、")[0]
+                            : ""
+                        }`}
+                      </Typography>
+                    </Stack>
                   </Grid>
                 </Grid>
               </Grid>

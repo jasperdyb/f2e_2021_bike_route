@@ -81,16 +81,18 @@ const mainTheme = createTheme({
     },
     h2: {
       fontSize: "18px",
-      letterSpacing: "1.26px",
-      lineHeight: "25px",
+    },
+    h3: {
+      fontSize: "16px",
     },
     subtitle1: {
       fontSize: "14px",
-      lineHeight: "16px",
+    },
+    subtitle2: {
+      fontSize: "12px",
     },
     body1: {
       fontSize: "16px",
-      lineHeight: "25px",
     },
   },
 
