@@ -68,29 +68,31 @@ export const GeolocationContextProvider: React.FC = (props) => {
 
   useEffect(() => {
     console.log("=== autoAddress updated ===");
-    if (autoAddress) {
-      const checkAddress = async () => {
-        const searchedAddress = await getGeocodingReverse({
-          latitude: location.latitude,
-          longitude: location.longitude,
-        });
-        if (searchedAddress) {
-          setAddress(searchedAddress);
-        }
-      };
+    const checkAddress = async (location) => {
+      const searchedAddress = await getGeocodingReverse({
+        latitude: location.latitude,
+        longitude: location.longitude,
+      });
+      if (searchedAddress) {
+        setAddress(searchedAddress);
+      }
+    };
+    const updateAddress = async () => {
+      if (autoAddress) {
+        getCurrentPosition(
+          (p) => {
+            console.log("=== getCurrentPosition success ===", p);
+            setLocation(p.coords);
+            checkAddress(p.coords);
+          },
+          (e) => {
+            console.log(e.message);
+          }
+        );
+      }
+    };
 
-      getCurrentPosition(
-        (p) => {
-          console.log("=== getCurrentPosition success ===", p);
-          setLocation(p.coords);
-        },
-        (e) => {
-          console.log(e.message);
-        }
-      );
-
-      checkAddress();
-    }
+    updateAddress();
   }, [autoAddress]);
 
   useEffect(() => {
