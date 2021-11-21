@@ -45,7 +45,7 @@ const Route = () => {
           objectPosition="center"
         />
       </HeaderImageContainer>
-      <Navbar color="info" />
+      <Navbar />
       <Container>
         <NavBreadCrumbs />
         <SearchPanelContainer>
