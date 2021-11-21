@@ -2,7 +2,11 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import type { Location } from "types/geolocation";
 import { CityOptions } from "types/cyclingRoute";
 
-import { getCurrentPosition, getGeocodingReverse } from "services/geolocation";
+import {
+  getCurrentPosition,
+  getGeocodingReverse,
+  getGeocoding,
+} from "services/geolocation";
 
 export type GeolocationContextType = {
   location: Location;
@@ -17,7 +21,7 @@ export type GeolocationContextType = {
   setCity: (c: string) => void;
   apply: boolean;
   setApply: (a: boolean) => void;
-  applySearch: () => void;
+  applySearch: (address?: string) => void;
   resetSearch: () => void;
 };
 
@@ -65,6 +69,16 @@ export const GeolocationContextProvider: React.FC = (props) => {
   useEffect(() => {
     console.log("=== autoAddress updated ===");
     if (autoAddress) {
+      const checkAddress = async () => {
+        const searchedAddress = await getGeocodingReverse({
+          latitude: location.latitude,
+          longitude: location.longitude,
+        });
+        if (searchedAddress) {
+          setAddress(searchedAddress);
+        }
+      };
+
       getCurrentPosition(
         (p) => {
           console.log("=== getCurrentPosition success ===", p);
@@ -74,22 +88,10 @@ export const GeolocationContextProvider: React.FC = (props) => {
           console.log(e.message);
         }
       );
+
+      checkAddress();
     }
   }, [autoAddress]);
-
-  useEffect(() => {
-    const checkAddress = async () => {
-      const searchedAddress = await getGeocodingReverse({
-        latitude: location.latitude,
-        longitude: location.longitude,
-      });
-      if (searchedAddress) {
-        setAddress(searchedAddress);
-      }
-    };
-
-    checkAddress();
-  }, [location]);
 
   useEffect(() => {
     if (apply) {
@@ -101,11 +103,26 @@ export const GeolocationContextProvider: React.FC = (props) => {
       if (cities.length) {
         console.log("=== city ===", cities[0].searchString);
         setCity(cities[0].searchString);
+      } else {
+        setCity(initValues.city);
       }
     }
   }, [apply]);
 
-  const applySearch = () => {
+  const applySearch = async (address?: string) => {
+    if (address) {
+      const geocodedLoaction = await getGeocoding(address);
+
+      console.log("=== onSubmit ===", geocodedLoaction);
+      if (geocodedLoaction) {
+        setAddress(address);
+        setLocation({
+          longitude: geocodedLoaction.lng,
+          latitude: geocodedLoaction.lat,
+        });
+      }
+    }
+
     setApply(true);
     setApply(false);
   };

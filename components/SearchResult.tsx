@@ -61,9 +61,12 @@ const SearchResult: React.FC = () => {
     googleMapsApiKey: process.env.GOOGLE_MAP_API_KEY,
     libraries: ["geometry"],
   });
-  const { location, city, apply } = useGeolocationContext();
+  const { location, city, apply, searchKey } = useGeolocationContext();
   const { cyclingRoutes, isLoading, isError, mutate } =
     useGetCyclingRouteIndex(city);
+  const [filteredData, setFilteredData] = useState<Array<CyclingIndexDataType>>(
+    []
+  );
   const [pageData, setPageData] = useState<Array<CyclingIndexDataType>>([]);
   const [page, setPage] = useState(1);
 
@@ -91,18 +94,35 @@ const SearchResult: React.FC = () => {
   };
 
   useEffect(() => {
-    if (cyclingRoutes)
+    if (searchKey) {
+      console.log("=== apply search key");
+      setFilteredData(
+        cyclingRoutes.filter((data) => data.RouteName.indexOf(searchKey) > -1)
+      );
+    } else if (cyclingRoutes && !isLoading && !isError) {
+      setFilteredData(cyclingRoutes);
+    } else {
+      setFilteredData([]);
+    }
+  }, [searchKey, cyclingRoutes]);
+
+  useEffect(() => {
+    console.log("=== update pageData ===");
+    if (filteredData.length) {
       setPageData(
-        cyclingRoutes.slice(
+        filteredData.slice(
           process.env.NUMBER_PER_PAGE * (page - 1),
           process.env.NUMBER_PER_PAGE * page
         )
       );
+    } else {
+      setPageData([]);
+    }
     // console.log(window.google.maps.geometry.spherical.computeDistanceBetween);
     return () => {
       setPageData([]);
     };
-  }, [page, cyclingRoutes]);
+  }, [page, filteredData]);
 
   useEffect(() => {
     if (apply) {
@@ -110,6 +130,10 @@ const SearchResult: React.FC = () => {
       mutate();
     }
   }, [apply, mutate]);
+
+  useEffect(() => {
+    console.log("===   pageData ===", pageData);
+  }, [pageData]);
 
   return (
     <>
@@ -151,15 +175,15 @@ const SearchResult: React.FC = () => {
         </SearchContainer>
       </Card>
       <PaginationContainer>
-        <SearchPagination
-          page={page}
-          dataLength={
-            !isLoading && !isError && cyclingRoutes && cyclingRoutes.length
-              ? cyclingRoutes.length
-              : 0
-          }
-          onChange={(_, page) => {}}
-        />
+        {filteredData.length ? (
+          <SearchPagination
+            page={page}
+            dataLength={filteredData.length}
+            onChange={(_, page) => {
+              setPage(page);
+            }}
+          />
+        ) : null}
       </PaginationContainer>
     </>
   );

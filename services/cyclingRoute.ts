@@ -352,16 +352,21 @@ const fetcher = (
   $top?: number,
   $filter?: String,
   $select?: Array<string>
-) =>
-  instance
-    .get(url, {
-      params: {
-        $top,
-        $filter: $filter ? `Class1 eq '${$filter}'` : null,
-        $select: $select ? $select.join(",") : null,
-      },
-    })
-    .then((res) => res.data);
+) => {
+  if (url) {
+    return instance
+      .get(url, {
+        params: {
+          $top,
+          $filter: $filter ? `Class1 eq '${$filter}'` : null,
+          $select: $select ? $select.join(",") : null,
+        },
+      })
+      .then((res) => res.data);
+  } else {
+    return null;
+  }
+};
 
 const select = [
   "RouteName",
@@ -417,13 +422,14 @@ export function useGetCyclingRouteIndex(
     fetcher,
     {
       onSuccess(data, key, config) {
+        console.log("=== useSWR key ===", key);
         data.forEach(
           (data) => (data["Geometry"] = parseGeometryData(data.Geometry))
         );
       },
       revalidateOnFocus: false,
       // revalidateOnMount: false,
-      revalidateIfStale: false,
+      // revalidateIfStale: false,
       // revalidateOnReconnect: false,
     }
   );

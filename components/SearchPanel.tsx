@@ -35,13 +35,10 @@ const SearchPanel: React.FC = () => {
   const {
     autoAddress,
     setAutoAddress,
-    location,
     setLocation,
     address,
     setAddress,
-
     setSearchKey,
-    setCity,
     applySearch,
     resetSearch,
   } = useGeolocationContext();
@@ -82,20 +79,10 @@ const SearchPanel: React.FC = () => {
     console.log(formState.dirtyFields);
     setSearchKey(data.search);
     if (autoAddress && !formState.dirtyFields.address) {
+      applySearch();
     } else {
-      const geocodedLoaction = await getGeocoding(data.address);
-
-      console.log("=== onSubmit ===", geocodedLoaction);
-      if (geocodedLoaction) {
-        setLocation({
-          longitude: geocodedLoaction.lng,
-          latitude: geocodedLoaction.lat,
-        });
-        setAddress(data.address);
-      }
+      applySearch(data.address);
     }
-
-    applySearch();
   };
 
   return (
