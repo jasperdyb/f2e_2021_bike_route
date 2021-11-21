@@ -13,8 +13,85 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import logoYellow from "@img/logo_yellow.png";
 import MenuIcon from "@mui/icons-material/Menu";
+import Drawer from "@mui/material/Drawer";
+import Box from "@mui/material/Box";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+
+import logoYellow from "@img/logo_yellow.png";
+
+import NavDrawer from "components/NavDrawer";
+
+const menu = [
+  { title: "最新消息", link: "/" },
+  { title: "探索路線", link: "/route" },
+  { title: "尋找站點", link: "/" },
+  { title: "常見問題", link: "/" },
+];
+
+interface Props {
+  color?: PropTypes.Color | "transparent";
+}
+
+const Navbar: React.FC<Props> = ({ color }) => {
+  const theme = useTheme();
+  const onMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const [menuOpen, setMenuOpen] = React.useState(false);
+
+  return (
+    <CustomAppBar color={color} position={onMobile ? "fixed" : "sticky"}>
+      <Stack
+        direction={"row"}
+        justifyContent={"space-between"}
+        divider={onMobile ? null : <Divider orientation="vertical" flexItem />}
+      >
+        {onMobile && (
+          <>
+            <MenuButton
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              onClick={() => setMenuOpen(true)}
+            >
+              <MenuIcon />
+            </MenuButton>
+            <NavDrawer
+              menu={menu}
+              open={menuOpen}
+              onClose={() => {
+                setMenuOpen(false);
+              }}
+            />
+          </>
+        )}
+        <Link href={"/"} passHref>
+          <TitleLinkStack textAlign={"center"}>
+            <Image
+              src={logoYellow}
+              layout="intrinsic"
+              alt="Logo"
+              width={"133px"}
+              height={"49px"}
+            />
+
+            <Slogan typography={"subtitle1"}>Bike Fun！自行車旅遊網</Slogan>
+          </TitleLinkStack>
+        </Link>
+
+        {!onMobile &&
+          menu.map((item, index) => (
+            <Link key={index} href={item.link} passHref>
+              <NavButton color="inherit">{item.title}</NavButton>
+            </Link>
+          ))}
+      </Stack>
+    </CustomAppBar>
+  );
+};
 
 const CustomAppBar = muiStyled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.common.white,
@@ -76,57 +153,5 @@ const NavButton = styled(themedButton)`
   flex-grow: 1;
   border-radius: 0;
 `;
-
-const menu = [
-  { title: "最新消息", link: "/" },
-  { title: "探索路線", link: "/route" },
-  { title: "尋照站點", link: "/" },
-  { title: "常見問題", link: "/" },
-];
-
-interface Props {
-  color?: PropTypes.Color | "transparent";
-}
-
-const Navbar: React.FC<Props> = ({ color }) => {
-  const theme = useTheme();
-  const onMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
-  return (
-    <CustomAppBar color={color} position={onMobile ? "fixed" : "sticky"}>
-      <Stack
-        direction={"row"}
-        justifyContent={"space-between"}
-        divider={onMobile ? null : <Divider orientation="vertical" flexItem />}
-      >
-        {onMobile && (
-          <MenuButton edge="start" color="inherit" aria-label="menu">
-            <MenuIcon />
-          </MenuButton>
-        )}
-        <Link href={"/"} passHref>
-          <TitleLinkStack textAlign={"center"}>
-            <Image
-              src={logoYellow}
-              layout="intrinsic"
-              alt="Logo"
-              width={"133px"}
-              height={"49px"}
-            />
-
-            <Slogan typography={"subtitle1"}>Bike Fun！自行車旅遊網</Slogan>
-          </TitleLinkStack>
-        </Link>
-
-        {!onMobile &&
-          menu.map((item, index) => (
-            <Link key={index} href={item.link} passHref>
-              <NavButton color="inherit">{item.title}</NavButton>
-            </Link>
-          ))}
-      </Stack>
-    </CustomAppBar>
-  );
-};
 
 export default Navbar;
