@@ -4,9 +4,9 @@ import styled from "styled-components";
 import Image from "next/image";
 
 import { styled as muiStyled } from "@mui/material/styles";
-import Switch from "@mui/material/Switch";
+import Switch, { SwitchProps } from "@mui/material/Switch";
 
-const IOSSwitch = muiStyled((props) => (
+const IOSSwitch = muiStyled((props: SwitchProps) => (
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
 ))(({ theme }) => ({
   width: 110,
@@ -57,10 +57,8 @@ const IOSSwitch = muiStyled((props) => (
   },
 }));
 
-interface Props {}
-
-const MainSwitch: React.FC<Props> = ({}) => {
-  return <IOSSwitch></IOSSwitch>;
+const MainSwitch: React.FC<SwitchProps> = ({ onChange }) => {
+  return <IOSSwitch onChange={onChange}></IOSSwitch>;
 };
 
 export default MainSwitch;

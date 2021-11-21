@@ -24,8 +24,12 @@ import FormGroup from "@mui/material/FormGroup";
 
 import MainSwitch from "components/MainSwitch";
 
-import { useSceneSpotContext } from "context/sceneSpot";
-import { getCurrentPosition } from "services/geolocation";
+import { useGeolocationContext } from "context/geolocation";
+import {
+  getCurrentPosition,
+  getGeocoding,
+  getGeocodingReverse,
+} from "services/geolocation";
 
 interface SearchFormType {
   search: string;
@@ -34,12 +38,9 @@ interface SearchFormType {
 }
 
 const SearchPanel: React.FC = () => {
-  const { region, city, type, setRegion, setCity, setType } =
-    useSceneSpotContext();
-  console.log("===  SearchPanel useSceneSpotContext ===", {
-    region,
-    city,
-  });
+  const { autoAddressm, setAutoAddress, location, address } =
+    useGeolocationContext();
+  console.log("=== location ===", location);
 
   const { handleSubmit, watch, setValue, control } = useForm<SearchFormType>({
     defaultValues: {
@@ -67,7 +68,11 @@ const SearchPanel: React.FC = () => {
               </TitleStack>
               <SwitchStack direction={"row"} alignItems={"center"}>
                 <SwitchLabel
-                  control={<MainSwitch />}
+                  control={
+                    <MainSwitch
+                      onChange={(_, checked) => setAutoAddress(checked)}
+                    />
+                  }
                   labelPlacement="start"
                   label="開啟自動定位"
                 />
@@ -85,7 +90,11 @@ const SearchPanel: React.FC = () => {
               />
               <SearchInputLabel
                 control={
-                  <SearchInput placeholder="請輸入地址" variant="outlined" />
+                  <SearchInput
+                    placeholder="請輸入地址"
+                    variant="outlined"
+                    value={address}
+                  />
                 }
                 labelPlacement="start"
                 label="手動輸入地址"
@@ -97,7 +106,11 @@ const SearchPanel: React.FC = () => {
               disableElevation
               variant="contained"
               color="secondary"
-              onClick={handleSubmit(onSubmit)}
+              // onClick={handleSubmit(onSubmit)}
+              onClick={() => {
+                const data = getCurrentPosition();
+                console.log(data);
+              }}
             >
               GO!
             </SearchButton>

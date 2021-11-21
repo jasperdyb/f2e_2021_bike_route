@@ -14,6 +14,7 @@ import {
   PaletteOptions,
 } from "@mui/material/styles";
 import { SceneSpotContextProvider } from "context/sceneSpot";
+import { GeolocationContextProvider } from "context/geolocation";
 
 const GlobalStyle = createGlobalStyle`
 html{ 
@@ -111,9 +112,11 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       <CssBaseline />
       <GlobalStyle />
       <ThemeProvider theme={mainTheme}>
-        <SceneSpotContextProvider>
-          {getLayout(<Component {...pageProps} />)}
-        </SceneSpotContextProvider>
+        <GeolocationContextProvider>
+          <SceneSpotContextProvider>
+            {getLayout(<Component {...pageProps} />)}
+          </SceneSpotContextProvider>
+        </GeolocationContextProvider>
       </ThemeProvider>
     </>
   );

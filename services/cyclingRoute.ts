@@ -268,6 +268,8 @@ function getAuthorizationHeader() {
   //  填入自己 ID、KEY 開始
   let AppID = process.env.TDC_APP_ID;
   let AppKey = process.env.TDC_APP_KEY;
+  console.log("==== AppID ===", AppID);
+  console.log("==== AppKey ===", AppKey);
   //  填入自己 ID、KEY 結束
   let GMTString = new Date().toUTCString();
   let ShaObj = new jsSHA("SHA-1", "TEXT");
@@ -318,7 +320,8 @@ export function useGetCyclingRouteIndex(
   console.log("==== useGetCyclingRouteIndex url ===", url);
 
   const { data, error } = useSWR(
-    [url, options?.$top, options?.$filter, select],
+    // [url, options?.$top, options?.$filter, select],
+    null,
     fetcher
   );
 

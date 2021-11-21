@@ -1,51 +1,22 @@
+import type { Location } from "types/geolocation";
+
 const axios = require("axios");
 
-export const getCurrentPosition = () => {
-  let status = "uninitialized";
-  let message = "Navigator not found";
-
-  let location = {
-    latitude: 0,
-    longitude: 0,
-  };
-
-  const success = (position) => {
-    const latitude = position.coords.latitude;
-    const longitude = position.coords.longitude;
-    status = "success";
-    location = {
-      latitude,
-      longitude,
-    };
-  };
-
-  const error = () => {
-    status = "error";
-    message = "Unable to retrieve your location";
-  };
-
+export const getCurrentPosition = (
+  successCallback: PositionCallback,
+  errorCallback: PositionErrorCallback,
+  options?: PositionOptions
+) => {
   if (
     typeof window !== "undefined" &&
     typeof window.navigator !== "undefined"
   ) {
-    if (!navigator.geolocation) {
-      status = "error";
-      message = "Geolocation is not supported by your browser";
-    } else {
-      navigator.geolocation.getCurrentPosition(success, error);
-    }
+    navigator.geolocation.getCurrentPosition(
+      successCallback,
+      errorCallback,
+      options
+    );
   }
-
-  return {
-    status,
-    message,
-    location,
-  };
-};
-
-type Location = {
-  latitude: number;
-  longitude: number;
 };
 
 export const getGeocoding = async (address: string) => {
@@ -65,13 +36,21 @@ export const getGeocoding = async (address: string) => {
 };
 
 export const getGeocodingReverse = async (location: Location) => {
+  console.log("==== getGeocodingReverse process.env ===", process.env);
   const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.latitude},${location.longitude}&key=${process.env.GOOGLE_GEOCODING_API_KEY}`;
-
+  console.log("=== getGeocodingReverse url ===", url);
   try {
     const response = await axios.get(url);
-    console.log(response);
-    return response;
+    console.log("=== getGeocodingReverse response ===", response);
+    if ("error_message" in response.data) {
+      throw new Error(response.data["error_message"]);
+    } else if ("results" in response.data) {
+      if (response.data.results.length) {
+        return response.data.results[0].formatted_address;
+      }
+    }
   } catch (error) {
+    console.log("=== getGeocodingReverse error ===", error);
     console.error(error);
     return null;
   }

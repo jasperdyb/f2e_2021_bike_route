@@ -3,6 +3,10 @@ module.exports = {
   reactStrictMode: true,
   env: {
     NUMBER_PER_PAGE: 12,
+    TDC_APP_ID: process.env.TDC_APP_ID,
+    TDC_APP_KEY: process.env.TDC_APP_KEY,
+    GOOGLE_MAP_API_KEY: process.env.GOOGLE_MAP_API_KEY,
+    GOOGLE_GEOCODING_API_KEY: process.env.GOOGLE_GEOCODING_API_KEY,
   },
   images: {
     domains: [
