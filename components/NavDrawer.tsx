@@ -7,18 +7,10 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 
 import { PropTypes } from "@mui/material";
 
-import AppBar from "@mui/material/AppBar";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import Drawer, { DrawerProps } from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 
 interface Props extends DrawerProps {
@@ -33,7 +25,7 @@ const NavDrawer: React.FC<Props> = ({ menu, open, onClose }) => {
       <List>
         {menu.map((item, index) => (
           <Link href={item.link} passHref key={index}>
-            <MenuListItem button>
+            <MenuListItem>
               <ListItemText primary={item.title} />
             </MenuListItem>
           </Link>
@@ -57,7 +49,7 @@ const MenuDrawer = muiStyled(Drawer)(({ theme }) => ({
   },
 }));
 
-const MenuListItem = muiStyled(ListItem)(({ theme }) => ({
+const MenuListItem = muiStyled(ListItemButton)(({ theme }) => ({
   color: theme.palette.primary.main,
 }));
 
