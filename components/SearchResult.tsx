@@ -25,6 +25,10 @@ import { useSceneSpotContext } from "context/sceneSpot";
 import { useGetCyclingRouteIndex } from "services/cyclingRoute";
 import { CyclingIndexDataType } from "types/cyclingRoute";
 
+import { useJsApiLoader } from "@react-google-maps/api";
+import { useGeolocationContext } from "context/geolocation";
+import { Location } from "types/geolocation";
+
 const SearchContainer = styled(CardContent)`
   padding: 24px 48px 32px 24px;
   &:last-child {
@@ -53,15 +57,38 @@ interface SearchFormType {
 }
 
 const SearchResult: React.FC = () => {
-  const { cyclingRoutes } = useGetCyclingRouteIndex();
+  const { isLoaded, loadError } = useJsApiLoader({
+    googleMapsApiKey: process.env.GOOGLE_MAP_API_KEY,
+    libraries: ["geometry"],
+  });
+  const { location, city, apply } = useGeolocationContext();
+  const { cyclingRoutes, isLoading, isError, mutate } =
+    useGetCyclingRouteIndex(city);
   const [pageData, setPageData] = useState<Array<CyclingIndexDataType>>([]);
   const [page, setPage] = useState(1);
-  const { region, city, type, setRegion, setCity, setType } =
-    useSceneSpotContext();
-  console.log("===  SearchResult useSceneSpotContext ===", {
-    region,
-    city,
-  });
+
+  const computeDistanceFromRoute = (cyclingLocation: Location) => {
+    if (isLoaded && !loadError) {
+      const fromLatlng = new window.google.maps.LatLng(
+        location.latitude,
+        location.longitude
+      );
+
+      const toLatlng = new window.google.maps.LatLng(
+        cyclingLocation.latitude,
+        cyclingLocation.longitude
+      );
+
+      const distance =
+        window.google.maps.geometry.spherical.computeDistanceBetween(
+          fromLatlng,
+          toLatlng
+        );
+      return Math.floor(distance / 100) / 10;
+    } else {
+      return null;
+    }
+  };
 
   useEffect(() => {
     if (cyclingRoutes)
@@ -71,7 +98,18 @@ const SearchResult: React.FC = () => {
           process.env.NUMBER_PER_PAGE * page
         )
       );
+    // console.log(window.google.maps.geometry.spherical.computeDistanceBetween);
+    return () => {
+      setPageData([]);
+    };
   }, [page, cyclingRoutes]);
+
+  useEffect(() => {
+    if (apply) {
+      console.log("=== mutate ===");
+      mutate();
+    }
+  }, [apply, mutate]);
 
   return (
     <>
@@ -92,12 +130,20 @@ const SearchResult: React.FC = () => {
           </Stack>
 
           <Grid container spacing={"28px"}>
-            {cyclingRoutes && cyclingRoutes.length === 0 ? (
+            {!isLoading &&
+            !isError &&
+            cyclingRoutes &&
+            cyclingRoutes.length === 0 ? (
               <Typography>很抱歉，沒有找到相關的路線。</Typography>
             ) : (
               pageData.map((cyclingRouteData, index) => (
                 <Grid key={index} item xs={4}>
-                  <CyclingRouteInfoCard cyclingRouteData={cyclingRouteData} />
+                  <CyclingRouteInfoCard
+                    cyclingRouteData={cyclingRouteData}
+                    distance={computeDistanceFromRoute(
+                      cyclingRouteData.Geometry[0]
+                    )}
+                  />
                 </Grid>
               ))
             )}
@@ -107,7 +153,11 @@ const SearchResult: React.FC = () => {
       <PaginationContainer>
         <SearchPagination
           page={page}
-          dataLength={cyclingRoutes.length}
+          dataLength={
+            !isLoading && !isError && cyclingRoutes && cyclingRoutes.length
+              ? cyclingRoutes.length
+              : 0
+          }
           onChange={(_, page) => {}}
         />
       </PaginationContainer>

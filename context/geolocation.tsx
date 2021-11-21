@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import type { Location } from "types/geolocation";
+import { CityOptions } from "types/cyclingRoute";
 
 import { getCurrentPosition, getGeocodingReverse } from "services/geolocation";
 
@@ -10,6 +11,14 @@ export type GeolocationContextType = {
   setAddress: (a: string) => void;
   autoAddress: boolean;
   setAutoAddress: (a: boolean) => void;
+  searchKey: string;
+  setSearchKey: (s: string) => void;
+  city: string;
+  setCity: (c: string) => void;
+  apply: boolean;
+  setApply: (a: boolean) => void;
+  applySearch: () => void;
+  resetSearch: () => void;
 };
 
 export const initValues = {
@@ -22,6 +31,14 @@ export const initValues = {
   setAddress: () => {},
   autoAddress: false,
   setAutoAddress: () => {},
+  searchKey: "",
+  setSearchKey: () => {},
+  city: "",
+  setCity: () => {},
+  apply: false,
+  setApply: () => {},
+  applySearch: () => {},
+  resetSearch: () => {},
 };
 
 export const GeolocationContext =
@@ -32,7 +49,18 @@ export const GeolocationContextProvider: React.FC = (props) => {
   // this state will be shared with all components
   const [location, setLocation] = useState(initValues.location);
   const [address, setAddress] = useState(initValues.address);
+  const [searchKey, setSearchKey] = useState(initValues.address);
   const [autoAddress, setAutoAddress] = useState(initValues.autoAddress);
+  const [city, setCity] = useState(initValues.city);
+  const [apply, setApply] = useState(initValues.apply);
+
+  const resetSearch = () => {
+    setLocation(initValues.location);
+    setAddress(initValues.address);
+    setSearchKey(initValues.address);
+    setAutoAddress(initValues.autoAddress);
+    setCity(initValues.city);
+  };
 
   useEffect(() => {
     console.log("=== autoAddress updated ===");
@@ -63,6 +91,24 @@ export const GeolocationContextProvider: React.FC = (props) => {
     checkAddress();
   }, [location]);
 
+  useEffect(() => {
+    if (apply) {
+      const cities = CityOptions.filter(
+        (city) => address.indexOf(city.title) > -1
+      );
+
+      console.log("=== cities ===", cities);
+      if (cities.length) {
+        console.log("=== city ===", cities[0].searchString);
+        setCity(cities[0].searchString);
+      }
+    }
+  }, [apply]);
+
+  const applySearch = () => {
+    setApply(true);
+    setApply(false);
+  };
   return (
     // this is the provider providing state
     <GeolocationContext.Provider
@@ -73,6 +119,14 @@ export const GeolocationContextProvider: React.FC = (props) => {
         setAddress,
         autoAddress,
         setAutoAddress,
+        searchKey,
+        setSearchKey,
+        city,
+        setCity,
+        apply,
+        setApply,
+        applySearch,
+        resetSearch,
       }}
     >
       {props.children}

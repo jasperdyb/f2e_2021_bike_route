@@ -44,9 +44,13 @@ const OpenTimeContainer = styled("div")`
 
 interface Props {
   cyclingRouteData: CyclingIndexDataType;
+  distance?: number;
 }
 
-const CyclingRouteInfoCard: React.FC<Props> = ({ cyclingRouteData }) => {
+const CyclingRouteInfoCard: React.FC<Props> = ({
+  cyclingRouteData,
+  distance,
+}) => {
   const theme = useTheme();
 
   return (
@@ -73,7 +77,7 @@ const CyclingRouteInfoCard: React.FC<Props> = ({ cyclingRouteData }) => {
                 </div>
               </Grid>
               <Grid item xs={12} container padding={"16px"}>
-                <Grid item xs={8} container rowSpacing={"12px"}>
+                <Grid item xs={7} container rowSpacing={"12px"}>
                   <Grid item xs={12}>
                     {cyclingRouteData.RouteName}
                   </Grid>
@@ -89,13 +93,14 @@ const CyclingRouteInfoCard: React.FC<Props> = ({ cyclingRouteData }) => {
                 </Grid>
                 <Grid
                   item
-                  xs={4}
+                  xs={5}
                   container
                   textAlign={"end"}
                   rowSpacing={"12px"}
+                  justifyContent={"flex-end"}
                 >
                   <Grid item xs={12}>
-                    Distance
+                    {distance ? `距離目標約 ${distance} 公里` : "-"}
                   </Grid>
                   <Grid item xs={12}>
                     {`${cyclingRouteData.City} ${

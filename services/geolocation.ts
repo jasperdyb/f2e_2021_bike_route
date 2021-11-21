@@ -20,16 +20,21 @@ export const getCurrentPosition = (
 };
 
 export const getGeocoding = async (address: string) => {
-  const url = (location: Location) =>
-    `https://maps.googleapis.com/maps/api/geocode/json?address=${address
-      .split(" ")
-      .join("+")}&key=${process.env.GOOGLE_GEOCODING_API_KEY}`;
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.GOOGLE_GEOCODING_API_KEY}`;
 
   try {
     const response = await axios.get(url);
-    console.log(response);
-    return response;
+    console.log("=== getGeocoding response ===", response);
+
+    if ("error_message" in response.data) {
+      throw new Error(response.data["error_message"]);
+    } else if ("results" in response.data) {
+      if (response.data.results.length) {
+        return response.data.results[0].geometry.location;
+      }
+    }
   } catch (error) {
+    console.log("=== getGeocoding error ===", error);
     console.error(error);
     return null;
   }

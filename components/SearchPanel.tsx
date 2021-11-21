@@ -25,33 +25,26 @@ import FormGroup from "@mui/material/FormGroup";
 import MainSwitch from "components/MainSwitch";
 
 import { useGeolocationContext } from "context/geolocation";
-import {
-  getCurrentPosition,
-  getGeocoding,
-  getGeocodingReverse,
-} from "services/geolocation";
-import {
-  GoogleMap,
-  useJsApiLoader,
-  useGoogleMap,
-} from "@react-google-maps/api";
+import { getGeocoding, getGeocodingReverse } from "services/geolocation";
 interface SearchFormType {
   search: string;
   address: string;
 }
 
 const SearchPanel: React.FC = () => {
-  const { autoAddress, setAutoAddress, location, address } =
-    useGeolocationContext();
+  const {
+    autoAddress,
+    setAutoAddress,
+    location,
+    setLocation,
+    address,
+    setAddress,
 
-  const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: process.env.GOOGLE_MAP_API_KEY, // ,
-    // ...otherOptions
-    libraries: ["geometry"],
-  });
-
-  console.log("=== isLoaded ===", isLoaded);
-  console.log("=== loadError ===", loadError);
+    setSearchKey,
+    setCity,
+    applySearch,
+    resetSearch,
+  } = useGeolocationContext();
 
   const {
     handleSubmit,
@@ -69,6 +62,12 @@ const SearchPanel: React.FC = () => {
   });
 
   useEffect(() => {
+    return () => {
+      resetSearch();
+    };
+  }, []);
+
+  useEffect(() => {
     if (autoAddress && address) {
       const currentValues = getValues();
       reset({
@@ -78,10 +77,25 @@ const SearchPanel: React.FC = () => {
     }
   }, [autoAddress, address]);
 
-  const onSubmit: SubmitHandler<SearchFormType> = (data) => {
+  const onSubmit: SubmitHandler<SearchFormType> = async (data) => {
     console.log(data);
     console.log(formState.dirtyFields);
-    console.log(window.google.maps.geometry.spherical.computeDistanceBetween);
+    setSearchKey(data.search);
+    if (autoAddress && !formState.dirtyFields.address) {
+    } else {
+      const geocodedLoaction = await getGeocoding(data.address);
+
+      console.log("=== onSubmit ===", geocodedLoaction);
+      if (geocodedLoaction) {
+        setLocation({
+          longitude: geocodedLoaction.lng,
+          latitude: geocodedLoaction.lat,
+        });
+        setAddress(data.address);
+      }
+    }
+
+    applySearch();
   };
 
   return (
