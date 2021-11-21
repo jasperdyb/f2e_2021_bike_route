@@ -33,7 +33,7 @@ const NavDrawer: React.FC<Props> = ({ menu, open, onClose }) => {
       <List>
         {menu.map((item, index) => (
           <Link href={item.link} passHref key={index}>
-            <MenuListItem button onClick={onClose}>
+            <MenuListItem button>
               <ListItemText primary={item.title} />
             </MenuListItem>
           </Link>
