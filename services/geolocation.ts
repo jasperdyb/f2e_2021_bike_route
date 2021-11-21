@@ -41,9 +41,8 @@ export const getGeocoding = async (address: string) => {
 };
 
 export const getGeocodingReverse = async (location: Location) => {
-  console.log("==== getGeocodingReverse process.env ===", process.env);
   const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.latitude},${location.longitude}&key=${process.env.GOOGLE_GEOCODING_API_KEY}`;
-  console.log("=== getGeocodingReverse url ===", url);
+
   try {
     const response = await axios.get(url);
     console.log("=== getGeocodingReverse response ===", response);
