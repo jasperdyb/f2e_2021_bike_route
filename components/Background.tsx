@@ -35,10 +35,15 @@ const ColoredTypography = muiStyled(Typography)(
 `
 );
 
-const Slogan = styled(ColoredTypography)`
-  text-align: end;
-  margin-right: -101px;
-`;
+const Slogan = muiStyled(Typography)(({ theme }) => ({
+  color: theme.palette.common.white,
+  textAlign: "end",
+  marginRight: "-101px",
+  [theme.breakpoints.down("sm")]: {
+    marginRight: 0,
+    textAlign: "center",
+  },
+}));
 
 const BackgroundImageChildrenContainer = styled("div")`
   position: relative;

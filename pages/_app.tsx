@@ -25,15 +25,6 @@ body{
 }
 `;
 
-declare module "@mui/material/styles" {
-  interface Palette {
-    primaryContrast: Palette["primary"];
-  }
-  interface PaletteOptions {
-    primaryContrast?: PaletteOptions["primary"];
-  }
-}
-
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
@@ -47,10 +38,6 @@ const mainTheme = createTheme({
     primary: {
       main: "#E1AB43",
       contrastText: "#FFF",
-    },
-    primaryContrast: {
-      main: "#FFF",
-      contrastText: "#E1AB43",
     },
     secondary: {
       main: "#A3C896",
@@ -68,7 +55,7 @@ const mainTheme = createTheme({
   typography: {
     // fontFamily:font-family: PingFangTC-Regular, sans-serif,
     fontFamily: [
-      "'EB Garamond'",
+      // "'Crimson Pro'",
       "PingFang TC",
       "'Noto Sans TC'",
       "Roboto",

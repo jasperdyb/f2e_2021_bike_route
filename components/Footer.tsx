@@ -12,11 +12,16 @@ import Link from "next/link";
 import Container from "@mui/material/Container";
 
 import styled from "styled-components";
+import { styled as muiStyled, useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
-const CustomAppBar = styled(AppBar)`
-  padding: 33px 0;
-  color: #fff;
-`;
+const CustomAppBar = muiStyled(AppBar)(({ theme }) => ({
+  padding: "33px 0",
+  color: theme.palette.common.white,
+  [theme.breakpoints.down("sm")]: {
+    textAlign: "center",
+  },
+}));
 
 const FooterContentStack = styled(Stack)`
   margin: 0 auto;
@@ -27,6 +32,8 @@ interface Props {
 }
 
 const Footer: React.FC<Props> = ({ color, children }) => {
+  const theme = useTheme();
+  const onMobile = useMediaQuery(theme.breakpoints.down("sm"));
   return (
     <CustomAppBar color={color} position="static">
       <FooterContentStack>{children}</FooterContentStack>

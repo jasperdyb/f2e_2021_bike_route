@@ -2,50 +2,55 @@ import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import styled from "styled-components";
-import { styled as muiStyled } from "@mui/material/styles";
+import { styled as muiStyled, useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 import { PropTypes } from "@mui/material";
 
 import AppBar from "@mui/material/AppBar";
 import Stack from "@mui/material/Stack";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import Divider from "@mui/material/Divider";
-
+import IconButton from "@mui/material/IconButton";
 import logoYellow from "@img/logo_yellow.png";
+import MenuIcon from "@mui/icons-material/Menu";
 
-const ThemedAppBar = muiStyled(AppBar)(
-  ({ theme }) => `
-  background-color:${theme.palette.common.white};
-  color:${theme.palette.common.black};
-  border-color:${theme.palette.divider};
-`
-);
+const CustomAppBar = muiStyled(AppBar)(({ theme }) => ({
+  backgroundColor: theme.palette.common.white,
+  color: theme.palette.common.black,
+  borderColor: theme.palette.divider,
+  boxShadow: "none",
+  borderTopLeftRadius: 50,
+  borderTopRightRadius: 50,
+  borderWidth: 1,
+  borderStyle: "solid",
+  overflow: "hidden",
+  [theme.breakpoints.down("sm")]: {
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: 0,
+    backgroundColor: "transparent",
+    borderColor: theme.palette.common.white,
+    borderWidth: 0,
+    borderBottomWidth: 1,
+  },
+}));
 
-const CustomAppBar = styled(ThemedAppBar)`
-  box-shadow: none;
-  border-radius: 50px 50px 0px 0px;
-  border-width: 1px;
-  border-style: solid;
-  overflow: hidden;
-`;
+const TitleLinkStack = muiStyled(Stack)(({ theme }) => ({
+  position: "relative",
+  cursor: "pointer",
+  margin: "19px 0",
+  padding: "0 128px",
+  [theme.breakpoints.down("sm")]: {
+    margin: "11px 0",
+    padding: "0 32px",
+  },
+}));
 
-const TitleLinkStack = styled(Stack)`
-  margin: 19px 0;
-  padding: 0 128px;
-  cursor: pointer;
-`;
-
-const Slogan = muiStyled(Typography)(
-  ({ theme }) => `
-  cursor: pointer;
-  color:${theme.palette.common.black}
-`
-);
+const Slogan = muiStyled(Typography)(({ theme }) => ({
+  cursor: "pointer",
+  color: theme.palette.common.black,
+}));
 
 const themedButton = muiStyled(Button)(
   ({ theme }) => `
@@ -58,14 +63,19 @@ const themedButton = muiStyled(Button)(
 `
 );
 
+const MenuButton = muiStyled(IconButton)(({ theme }) => ({
+  color: theme.palette.common.white,
+  borderColor: theme.palette.common.white,
+  borderRightWidth: 1,
+  borderStyle: "solid",
+  borderRadius: 0,
+  padding: "0 30px",
+}));
+
 const NavButton = styled(themedButton)`
   flex-grow: 1;
   border-radius: 0;
 `;
-
-// const Logo = styled(Image)`
-//   fill: #000 !important;
-// `;
 
 const menu = [
   { title: "最新消息", link: "/" },
@@ -79,16 +89,26 @@ interface Props {
 }
 
 const Navbar: React.FC<Props> = ({ color }) => {
+  const theme = useTheme();
+  const onMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
-    <CustomAppBar color={color} position="sticky">
+    <CustomAppBar color={color} position={onMobile ? "fixed" : "sticky"}>
       <Stack
         direction={"row"}
-        divider={<Divider orientation="vertical" flexItem />}
+        justifyContent={"space-between"}
+        divider={onMobile ? null : <Divider orientation="vertical" flexItem />}
       >
+        {onMobile && (
+          <MenuButton edge="start" color="inherit" aria-label="menu">
+            <MenuIcon />
+          </MenuButton>
+        )}
         <Link href={"/"} passHref>
           <TitleLinkStack textAlign={"center"}>
             <Image
               src={logoYellow}
+              layout="intrinsic"
               alt="Logo"
               width={"133px"}
               height={"49px"}
@@ -97,11 +117,13 @@ const Navbar: React.FC<Props> = ({ color }) => {
             <Slogan typography={"subtitle1"}>Bike Fun！自行車旅遊網</Slogan>
           </TitleLinkStack>
         </Link>
-        {menu.map((item, index) => (
-          <Link key={index} href={item.link} passHref>
-            <NavButton color="inherit">{item.title}</NavButton>
-          </Link>
-        ))}
+
+        {!onMobile &&
+          menu.map((item, index) => (
+            <Link key={index} href={item.link} passHref>
+              <NavButton color="inherit">{item.title}</NavButton>
+            </Link>
+          ))}
       </Stack>
     </CustomAppBar>
   );

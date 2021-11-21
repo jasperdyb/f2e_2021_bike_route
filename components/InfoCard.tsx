@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-import { styled as muiStyled } from "@mui/material/styles";
+import { styled as muiStyled, useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import Image from "next/image";
 import { gsap } from "gsap";
-
-import { useTheme } from "@mui/material/styles";
 
 import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
@@ -28,27 +27,34 @@ import { SceneSpotDataType } from "types/sceneSpots";
 
 import ImageWithFallback from "components/ImageWithFallback";
 
-import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
-export const InfoCardContainer = styled("div")`
-  position: relative;
-  height: 100%;
-  overflow: hidden;
-`;
+export const InfoCardContainer = muiStyled("div")(({ theme }) => ({
+  position: "relative",
+  height: "100%",
+  overflow: "hidden",
+  [theme.breakpoints.down("sm")]: {
+    height: "379px",
+  },
+}));
 
-const BackgroundImageContainer = styled.div`
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-  z-index: 0;
-  &:hover {
-    transform: scale(1.2, 1.2);
-  }
-`;
+const ActivityInfoCardContainer = muiStyled(InfoCardContainer)(({ theme }) => ({
+  [theme.breakpoints.down("sm")]: {
+    height: "408px",
+    margin: "0 25px",
+  },
+}));
 
-const SlideCardBackgroundImage = styled(ImageWithFallback)`
-  z-index: 10;
-`;
+const BackgroundImageContainer = muiStyled("div")(({ theme }) => ({
+  position: "absolute",
+  height: "100%",
+  width: "100%",
+  overflow: "hidden",
+  zIndex: 1,
+  [theme.breakpoints.down("sm")]: {},
+}));
+
+const SlideCardBackgroundImage = muiStyled(ImageWithFallback)(({ theme }) => ({
+  zIndex: 0,
+}));
 
 const InfoCardActionArea = styled(CardActionArea)`
   height: 100%;
@@ -67,21 +73,17 @@ const InfoTitle = styled(Typography)`
   margin-bottom: 46px;
 `;
 
-const ArrowRightAltIconLight = styled(ArrowRightAltIcon)`
-  color: #eeeeee;
-`;
-ArrowRightAltIcon;
-
 interface Props {
   backgroundImage?: string;
 }
 
 const InfoCard: React.FC<Props> = ({ backgroundImage, children }) => {
   const theme = useTheme();
+  const onMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const imageRef = useRef();
 
   return (
-    <InfoCardContainer>
+    <ActivityInfoCardContainer>
       <BackgroundImageContainer ref={imageRef}>
         <SlideCardBackgroundImage
           src={backgroundImage}
@@ -95,10 +97,10 @@ const InfoCard: React.FC<Props> = ({ backgroundImage, children }) => {
       <InfoCardActionArea
         onClick={() => console.log("CLLLLLLLick")}
         onMouseEnter={() => {
-          gsap.to(imageRef.current, { scale: 1.2 });
+          if (!onMobile) gsap.to(imageRef.current, { scale: 1.2 });
         }}
         onMouseLeave={() => {
-          gsap.to(imageRef.current, { scale: 1 });
+          if (!onMobile) gsap.to(imageRef.current, { scale: 1.2 });
         }}
       >
         <InfoContainer textAlign={"center"}>
@@ -109,7 +111,7 @@ const InfoCard: React.FC<Props> = ({ backgroundImage, children }) => {
           <Typography color="common.white">+ Read more</Typography>
         </InfoContainer>
       </InfoCardActionArea>
-    </InfoCardContainer>
+    </ActivityInfoCardContainer>
   );
 };
 export default InfoCard;

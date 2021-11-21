@@ -165,7 +165,7 @@ const SearchPanel: React.FC = () => {
               color="secondary"
               onClick={handleSubmit(onSubmit)}
             >
-              GO!
+              GO !
             </SearchButton>
           </Stack>
         </Grid>

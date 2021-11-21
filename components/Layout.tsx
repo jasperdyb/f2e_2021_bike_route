@@ -4,7 +4,8 @@ import styled from "styled-components";
 import Head from "next/head";
 import Image from "next/image";
 
-import { styled as muiStyled } from "@mui/material/styles";
+import { styled as muiStyled, useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import Stack from "@mui/material/Stack";
 import { Typography } from "@mui/material";
 
@@ -14,6 +15,8 @@ import Footer from "components/Footer";
 
 interface Props {}
 const Layout: React.FC<Props> = ({ children }) => {
+  const theme = useTheme();
+  const onMobile = useMediaQuery(theme.breakpoints.down("sm"));
   return (
     <>
       <Head>
@@ -23,8 +26,8 @@ const Layout: React.FC<Props> = ({ children }) => {
       {children}
       <Footer>
         <Typography>
-          BikeFun © 2021 Designer Vum. Engineer Jasper Chen. All rights
-          reserved.
+          BikeFun ©{onMobile && <br />} 2021 Designer Vum. Engineer Jasper Chen.
+          All rights reserved.
         </Typography>
       </Footer>
     </>
