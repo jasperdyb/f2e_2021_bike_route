@@ -30,29 +30,59 @@ import {
   getGeocoding,
   getGeocodingReverse,
 } from "services/geolocation";
-
+import {
+  GoogleMap,
+  useJsApiLoader,
+  useGoogleMap,
+} from "@react-google-maps/api";
 interface SearchFormType {
   search: string;
   address: string;
-  autoPositionOn: boolean;
 }
 
 const SearchPanel: React.FC = () => {
-  const { autoAddressm, setAutoAddress, location, address } =
+  const { autoAddress, setAutoAddress, location, address } =
     useGeolocationContext();
-  console.log("=== location ===", location);
 
-  const { handleSubmit, watch, setValue, control } = useForm<SearchFormType>({
+  const { isLoaded, loadError } = useJsApiLoader({
+    googleMapsApiKey: process.env.GOOGLE_MAP_API_KEY, // ,
+    // ...otherOptions
+    libraries: ["geometry"],
+  });
+
+  console.log("=== isLoaded ===", isLoaded);
+  console.log("=== loadError ===", loadError);
+
+  const {
+    handleSubmit,
+    watch,
+    getValues,
+    setValue,
+    reset,
+    control,
+    formState,
+  } = useForm<SearchFormType>({
     defaultValues: {
       search: "",
       address: "",
-      autoPositionOn: false,
     },
   });
 
-  const autoPositionOn = watch("autoPositionOn", false);
+  useEffect(() => {
+    if (autoAddress && address) {
+      const currentValues = getValues();
+      reset({
+        ...currentValues,
+        address,
+      });
+    }
+  }, [autoAddress, address]);
 
-  const onSubmit: SubmitHandler<SearchFormType> = (data) => {};
+  const onSubmit: SubmitHandler<SearchFormType> = (data) => {
+    console.log(data);
+    console.log(formState.dirtyFields);
+    console.log(window.google.maps.geometry.spherical.computeDistanceBetween);
+  };
 
   return (
     <Card raised>
@@ -81,23 +111,49 @@ const SearchPanel: React.FC = () => {
           </TitleGrid>
           <Grid>
             <Stack height={"100%"} justifyContent={"space-between"}>
-              <SearchInputLabel
-                control={
-                  <SearchInput placeholder="請輸入關鍵字" variant="outlined" />
-                }
-                labelPlacement="start"
-                label="路線關鍵字"
-              />
-              <SearchInputLabel
-                control={
-                  <SearchInput
-                    placeholder="請輸入地址"
-                    variant="outlined"
-                    value={address}
+              <Controller
+                name="search"
+                control={control}
+                render={({
+                  field: { onChange, onBlur, value, name, ref },
+                  fieldState: { invalid, isTouched, isDirty, error },
+                  formState,
+                }) => (
+                  <SearchInputLabel
+                    control={
+                      <SearchInput
+                        placeholder="請輸入關鍵字"
+                        variant="outlined"
+                        value={value}
+                        onChange={onChange}
+                      />
+                    }
+                    labelPlacement="start"
+                    label="路線關鍵字"
                   />
-                }
-                labelPlacement="start"
-                label="手動輸入地址"
+                )}
+              />{" "}
+              <Controller
+                name="address"
+                control={control}
+                render={({
+                  field: { onChange, onBlur, value, name, ref },
+                  fieldState: { invalid, isTouched, isDirty, error },
+                  formState,
+                }) => (
+                  <SearchInputLabel
+                    control={
+                      <SearchInput
+                        placeholder="請輸入地址"
+                        variant="outlined"
+                        value={value}
+                        onChange={onChange}
+                      />
+                    }
+                    labelPlacement="start"
+                    label="手動輸入地址"
+                  />
+                )}
               />
             </Stack>
           </Grid>
@@ -106,11 +162,7 @@ const SearchPanel: React.FC = () => {
               disableElevation
               variant="contained"
               color="secondary"
-              // onClick={handleSubmit(onSubmit)}
-              onClick={() => {
-                const data = getCurrentPosition();
-                console.log(data);
-              }}
+              onClick={handleSubmit(onSubmit)}
             >
               GO!
             </SearchButton>

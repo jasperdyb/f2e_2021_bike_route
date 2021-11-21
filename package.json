@@ -13,6 +13,7 @@
     "@mui/icons-material": "^5.1.0",
     "@mui/material": "^5.0.6",
     "@mui/styled-engine-sc": "^5.0.4",
+    "@react-google-maps/api": "^2.7.0",
     "axios": "^0.24.0",
     "embla-carousel-react": "^6.0.1",
     "gsap": "^3.8.0",
