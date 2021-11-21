@@ -2,20 +2,11 @@ import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { styled as muiStyled, useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import Image from "next/image";
+import Image, { ImageProps } from "next/image";
 import { gsap } from "gsap";
 
 import Stack from "@mui/material/Stack";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import SkipNextIcon from "@mui/icons-material/SkipNext";
 import { CardActionArea } from "@mui/material";
 import Chip from "@mui/material/Chip";
 import RoomIcon from "@mui/icons-material/Room";
@@ -74,7 +65,7 @@ const InfoTitle = styled(Typography)`
 `;
 
 interface Props {
-  backgroundImage?: string;
+  backgroundImage?: ImageProps["src"];
 }
 
 const InfoCard: React.FC<Props> = ({ backgroundImage, children }) => {
@@ -95,7 +86,7 @@ const InfoCard: React.FC<Props> = ({ backgroundImage, children }) => {
       </BackgroundImageContainer>
 
       <InfoCardActionArea
-        onClick={() => console.log("CLLLLLLLick")}
+        onClick={() => console.log("CLick")}
         onMouseEnter={() => {
           if (!onMobile) gsap.to(imageRef.current, { scale: 1.2 });
         }}

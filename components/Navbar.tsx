@@ -7,7 +7,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 
 import { PropTypes } from "@mui/material";
 
-import AppBar from "@mui/material/AppBar";
+import AppBar, { AppBarProps } from "@mui/material/AppBar";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -32,11 +32,7 @@ const menu = [
   { title: "常見問題", link: "/" },
 ];
 
-interface Props {
-  color?: PropTypes.Color | "transparent";
-}
-
-const Navbar: React.FC<Props> = ({ color }) => {
+const Navbar: React.FC<AppBarProps> = ({ color }) => {
   const theme = useTheme();
   const onMobile = useMediaQuery(theme.breakpoints.down("sm"));
 

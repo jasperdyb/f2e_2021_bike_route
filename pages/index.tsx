@@ -30,7 +30,7 @@ const Home = () => {
   return (
     <>
       <Background image={bg01} logo={logo_white}>
-        <Navbar color="info" />
+        <Navbar />
         <DescriptionContainer>
           <DescriptionBody alignItems={"center"}>
             <BikeBoyImage src={bike_boy} alt="bike boy" />
@@ -49,10 +49,10 @@ const Home = () => {
               spacing={onMobile && "24px"}
             >
               <InfoCardHalfContainer>
-                <InfoCard src={index_news01} />
+                <InfoCard backgroundImage={index_news01} />
               </InfoCardHalfContainer>
               <InfoCardHalfContainer>
-                <InfoCard src={index_news01} />
+                <InfoCard backgroundImage={index_news01} />
               </InfoCardHalfContainer>
             </Stack>
           }
@@ -140,7 +140,6 @@ const Home = () => {
           }
         />
         <FaqStack
-          alignItems={"center"}
           justifyContent={"center"}
           alignItems={onMobile ? "flex-start" : "center"}
           paddingX={onMobile && "15px"}
